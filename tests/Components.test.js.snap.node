@@ -1,0 +1,606 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CheckDay /> should match snapshot 1`] = `
+<div
+  className="css-view-1dbjc4n"
+  style={
+    Object {
+      "WebkitBoxPack": "center",
+      "WebkitJustifyContent": "center",
+      "backgroundColor": "rgba(255,153,153,1.00)",
+      "borderBottomLeftRadius": "10px",
+      "borderBottomRightRadius": "10px",
+      "borderTopLeftRadius": "10px",
+      "borderTopRightRadius": "10px",
+      "justifyContent": "center",
+      "marginBottom": "5px",
+      "marginLeft": "5px",
+      "marginRight": "5px",
+      "marginTop": "5px",
+      "msFlexPack": "center",
+      "paddingBottom": "10px",
+      "paddingLeft": "10px",
+      "paddingRight": "10px",
+      "paddingTop": "10px",
+    }
+  }
+>
+  <div
+    className="css-view-1dbjc4n"
+  >
+    <div
+      className="css-text-901oao"
+      dir="auto"
+      style={
+        Object {
+          "color": "rgba(255,255,255,1.00)",
+          "fontFamily": "Skranji_700Bold",
+          "fontSize": "25px",
+        }
+      }
+    >
+       How was your day? 
+    </div>
+  </div>
+  <div
+    className="css-view-1dbjc4n"
+    style={
+      Object {
+        "WebkitAlignItems": "center",
+        "WebkitBoxAlign": "center",
+        "WebkitBoxDirection": "normal",
+        "WebkitBoxOrient": "horizontal",
+        "WebkitBoxPack": "justify",
+        "WebkitFlexDirection": "row",
+        "WebkitJustifyContent": "space-around",
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-around",
+        "minHeight": "50px",
+        "msFlexAlign": "center",
+        "msFlexDirection": "row",
+        "msFlexPack": "distribute",
+      }
+    }
+  >
+    <div
+      className="css-view-1dbjc4n"
+      onClick={[Function]}
+      onContextMenu={[Function]}
+      onKeyDown={[Function]}
+      style={
+        Object {
+          "MozTransitionProperty": "opacity",
+          "MozUserSelect": "none",
+          "WebkitTransitionDuration": "0s",
+          "WebkitTransitionProperty": "opacity",
+          "WebkitUserSelect": "none",
+          "cursor": "pointer",
+          "msTouchAction": "manipulation",
+          "msUserSelect": "none",
+          "touchAction": "manipulation",
+          "transitionDuration": "0s",
+          "transitionProperty": "opacity",
+          "userSelect": "none",
+        }
+      }
+      tabIndex="0"
+    >
+      <div
+        className="css-text-901oao"
+        dir="auto"
+        style={
+          Object {
+            "color": "rgba(255,255,255,1.00)",
+            "fontFamily": "Skranji_700Bold",
+            "fontSize": "25px",
+          }
+        }
+      >
+         1 
+      </div>
+    </div>
+    <div
+      className="css-view-1dbjc4n"
+      onClick={[Function]}
+      onContextMenu={[Function]}
+      onKeyDown={[Function]}
+      style={
+        Object {
+          "MozTransitionProperty": "opacity",
+          "MozUserSelect": "none",
+          "WebkitTransitionDuration": "0s",
+          "WebkitTransitionProperty": "opacity",
+          "WebkitUserSelect": "none",
+          "cursor": "pointer",
+          "msTouchAction": "manipulation",
+          "msUserSelect": "none",
+          "touchAction": "manipulation",
+          "transitionDuration": "0s",
+          "transitionProperty": "opacity",
+          "userSelect": "none",
+        }
+      }
+      tabIndex="0"
+    >
+      <div
+        className="css-text-901oao"
+        dir="auto"
+        style={
+          Object {
+            "color": "rgba(255,255,255,1.00)",
+            "fontFamily": "Skranji_700Bold",
+            "fontSize": "25px",
+          }
+        }
+      >
+         2 
+      </div>
+    </div>
+    <div
+      className="css-view-1dbjc4n"
+      onClick={[Function]}
+      onContextMenu={[Function]}
+      onKeyDown={[Function]}
+      style={
+        Object {
+          "MozTransitionProperty": "opacity",
+          "MozUserSelect": "none",
+          "WebkitTransitionDuration": "0s",
+          "WebkitTransitionProperty": "opacity",
+          "WebkitUserSelect": "none",
+          "cursor": "pointer",
+          "msTouchAction": "manipulation",
+          "msUserSelect": "none",
+          "touchAction": "manipulation",
+          "transitionDuration": "0s",
+          "transitionProperty": "opacity",
+          "userSelect": "none",
+        }
+      }
+      tabIndex="0"
+    >
+      <div
+        className="css-text-901oao"
+        dir="auto"
+        style={
+          Object {
+            "color": "rgba(255,255,255,1.00)",
+            "fontFamily": "Skranji_700Bold",
+            "fontSize": "25px",
+          }
+        }
+      >
+         3 
+      </div>
+    </div>
+    <div
+      className="css-view-1dbjc4n"
+      onClick={[Function]}
+      onContextMenu={[Function]}
+      onKeyDown={[Function]}
+      style={
+        Object {
+          "MozTransitionProperty": "opacity",
+          "MozUserSelect": "none",
+          "WebkitTransitionDuration": "0s",
+          "WebkitTransitionProperty": "opacity",
+          "WebkitUserSelect": "none",
+          "cursor": "pointer",
+          "msTouchAction": "manipulation",
+          "msUserSelect": "none",
+          "touchAction": "manipulation",
+          "transitionDuration": "0s",
+          "transitionProperty": "opacity",
+          "userSelect": "none",
+        }
+      }
+      tabIndex="0"
+    >
+      <div
+        className="css-text-901oao"
+        dir="auto"
+        style={
+          Object {
+            "color": "rgba(255,255,255,1.00)",
+            "fontFamily": "Skranji_700Bold",
+            "fontSize": "25px",
+          }
+        }
+      >
+         4 
+      </div>
+    </div>
+    <div
+      className="css-view-1dbjc4n"
+      onClick={[Function]}
+      onContextMenu={[Function]}
+      onKeyDown={[Function]}
+      style={
+        Object {
+          "MozTransitionProperty": "opacity",
+          "MozUserSelect": "none",
+          "WebkitTransitionDuration": "0s",
+          "WebkitTransitionProperty": "opacity",
+          "WebkitUserSelect": "none",
+          "cursor": "pointer",
+          "msTouchAction": "manipulation",
+          "msUserSelect": "none",
+          "touchAction": "manipulation",
+          "transitionDuration": "0s",
+          "transitionProperty": "opacity",
+          "userSelect": "none",
+        }
+      }
+      tabIndex="0"
+    >
+      <div
+        className="css-text-901oao"
+        dir="auto"
+        style={
+          Object {
+            "color": "rgba(255,255,255,1.00)",
+            "fontFamily": "Skranji_700Bold",
+            "fontSize": "25px",
+          }
+        }
+      >
+         5 
+      </div>
+    </div>
+  </div>
+  <div
+    className="css-view-1dbjc4n"
+  >
+    <div
+      className="css-text-901oao"
+      dir="auto"
+      style={
+        Object {
+          "color": "rgba(255,255,255,1.00)",
+          "fontWeight": "bold",
+          "marginLeft": "34%",
+          "marginRight": "34%",
+        }
+      }
+    >
+       5 is too good! 
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<CheckReminder /> should match snapshot 1`] = `
+<div
+  className="css-view-1dbjc4n"
+  style={
+    Object {
+      "WebkitAlignItems": "center",
+      "WebkitBoxAlign": "center",
+      "WebkitBoxDirection": "normal",
+      "WebkitBoxOrient": "horizontal",
+      "WebkitBoxPack": "justify",
+      "WebkitFlexDirection": "row",
+      "WebkitJustifyContent": "space-around",
+      "alignItems": "center",
+      "flexDirection": "row",
+      "justifyContent": "space-around",
+      "msFlexAlign": "center",
+      "msFlexDirection": "row",
+      "msFlexPack": "distribute",
+      "width": "90%",
+    }
+  }
+>
+  <div
+    className="css-view-1dbjc4n"
+    onClick={[Function]}
+    onContextMenu={[Function]}
+    onKeyDown={[Function]}
+    style={
+      Object {
+        "MozTransitionProperty": "opacity",
+        "MozUserSelect": "none",
+        "WebkitAlignItems": "center",
+        "WebkitBoxAlign": "center",
+        "WebkitBoxPack": "center",
+        "WebkitJustifyContent": "center",
+        "WebkitTransitionDuration": "0s",
+        "WebkitTransitionProperty": "opacity",
+        "WebkitUserSelect": "none",
+        "alignItems": "center",
+        "borderBottomLeftRadius": "60px",
+        "borderBottomRightRadius": "60px",
+        "borderTopLeftRadius": "60px",
+        "borderTopRightRadius": "60px",
+        "cursor": "pointer",
+        "height": "60px",
+        "justifyContent": "center",
+        "msFlexAlign": "center",
+        "msFlexPack": "center",
+        "msTouchAction": "manipulation",
+        "msUserSelect": "none",
+        "touchAction": "manipulation",
+        "transitionDuration": "0s",
+        "transitionProperty": "opacity",
+        "userSelect": "none",
+        "width": "60px",
+      }
+    }
+    tabIndex="0"
+  >
+    <div
+      className="css-text-901oao"
+      dir="auto"
+      style={
+        Object {
+          "fontSize": "14px",
+          "fontWeight": "bold",
+        }
+      }
+    >
+       on the 
+    </div>
+    <div
+      className="css-text-901oao"
+      dir="auto"
+      style={
+        Object {
+          "fontSize": "14px",
+          "fontWeight": "bold",
+        }
+      }
+    >
+       day 
+    </div>
+  </div>
+  <div
+    className="css-view-1dbjc4n"
+    onClick={[Function]}
+    onContextMenu={[Function]}
+    onKeyDown={[Function]}
+    style={
+      Object {
+        "MozTransitionProperty": "opacity",
+        "MozUserSelect": "none",
+        "WebkitAlignItems": "center",
+        "WebkitBoxAlign": "center",
+        "WebkitBoxPack": "center",
+        "WebkitJustifyContent": "center",
+        "WebkitTransitionDuration": "0s",
+        "WebkitTransitionProperty": "opacity",
+        "WebkitUserSelect": "none",
+        "alignItems": "center",
+        "borderBottomLeftRadius": "60px",
+        "borderBottomRightRadius": "60px",
+        "borderTopLeftRadius": "60px",
+        "borderTopRightRadius": "60px",
+        "cursor": "pointer",
+        "height": "60px",
+        "justifyContent": "center",
+        "msFlexAlign": "center",
+        "msFlexPack": "center",
+        "msTouchAction": "manipulation",
+        "msUserSelect": "none",
+        "touchAction": "manipulation",
+        "transitionDuration": "0s",
+        "transitionProperty": "opacity",
+        "userSelect": "none",
+        "width": "60px",
+      }
+    }
+    tabIndex="0"
+  >
+    <div
+      className="css-text-901oao"
+      dir="auto"
+      style={
+        Object {
+          "fontSize": "14px",
+          "fontWeight": "bold",
+        }
+      }
+    >
+       1 day 
+    </div>
+    <div
+      className="css-text-901oao"
+      dir="auto"
+      style={
+        Object {
+          "fontSize": "14px",
+          "fontWeight": "bold",
+        }
+      }
+    >
+       early 
+    </div>
+  </div>
+  <div
+    className="css-view-1dbjc4n"
+    onClick={[Function]}
+    onContextMenu={[Function]}
+    onKeyDown={[Function]}
+    style={
+      Object {
+        "MozTransitionProperty": "opacity",
+        "MozUserSelect": "none",
+        "WebkitAlignItems": "center",
+        "WebkitBoxAlign": "center",
+        "WebkitBoxPack": "center",
+        "WebkitJustifyContent": "center",
+        "WebkitTransitionDuration": "0s",
+        "WebkitTransitionProperty": "opacity",
+        "WebkitUserSelect": "none",
+        "alignItems": "center",
+        "borderBottomLeftRadius": "60px",
+        "borderBottomRightRadius": "60px",
+        "borderTopLeftRadius": "60px",
+        "borderTopRightRadius": "60px",
+        "cursor": "pointer",
+        "height": "60px",
+        "justifyContent": "center",
+        "msFlexAlign": "center",
+        "msFlexPack": "center",
+        "msTouchAction": "manipulation",
+        "msUserSelect": "none",
+        "touchAction": "manipulation",
+        "transitionDuration": "0s",
+        "transitionProperty": "opacity",
+        "userSelect": "none",
+        "width": "60px",
+      }
+    }
+    tabIndex="0"
+  >
+    <div
+      className="css-text-901oao"
+      dir="auto"
+      style={
+        Object {
+          "fontSize": "14px",
+          "fontWeight": "bold",
+        }
+      }
+    >
+       2 days 
+    </div>
+    <div
+      className="css-text-901oao"
+      dir="auto"
+      style={
+        Object {
+          "fontSize": "14px",
+          "fontWeight": "bold",
+        }
+      }
+    >
+       early 
+    </div>
+  </div>
+  <div
+    className="css-view-1dbjc4n"
+    onClick={[Function]}
+    onContextMenu={[Function]}
+    onKeyDown={[Function]}
+    style={
+      Object {
+        "MozTransitionProperty": "opacity",
+        "MozUserSelect": "none",
+        "WebkitAlignItems": "center",
+        "WebkitBoxAlign": "center",
+        "WebkitBoxPack": "center",
+        "WebkitJustifyContent": "center",
+        "WebkitTransitionDuration": "0s",
+        "WebkitTransitionProperty": "opacity",
+        "WebkitUserSelect": "none",
+        "alignItems": "center",
+        "borderBottomLeftRadius": "60px",
+        "borderBottomRightRadius": "60px",
+        "borderTopLeftRadius": "60px",
+        "borderTopRightRadius": "60px",
+        "cursor": "pointer",
+        "height": "60px",
+        "justifyContent": "center",
+        "msFlexAlign": "center",
+        "msFlexPack": "center",
+        "msTouchAction": "manipulation",
+        "msUserSelect": "none",
+        "touchAction": "manipulation",
+        "transitionDuration": "0s",
+        "transitionProperty": "opacity",
+        "userSelect": "none",
+        "width": "60px",
+      }
+    }
+    tabIndex="0"
+  >
+    <div
+      className="css-text-901oao"
+      dir="auto"
+      style={
+        Object {
+          "fontSize": "14px",
+          "fontWeight": "bold",
+        }
+      }
+    >
+       3 days 
+    </div>
+    <div
+      className="css-text-901oao"
+      dir="auto"
+      style={
+        Object {
+          "fontSize": "14px",
+          "fontWeight": "bold",
+        }
+      }
+    >
+       early 
+    </div>
+  </div>
+  <div
+    className="css-view-1dbjc4n"
+    onClick={[Function]}
+    onContextMenu={[Function]}
+    onKeyDown={[Function]}
+    style={
+      Object {
+        "MozTransitionProperty": "opacity",
+        "MozUserSelect": "none",
+        "WebkitAlignItems": "center",
+        "WebkitBoxAlign": "center",
+        "WebkitBoxPack": "center",
+        "WebkitJustifyContent": "center",
+        "WebkitTransitionDuration": "0s",
+        "WebkitTransitionProperty": "opacity",
+        "WebkitUserSelect": "none",
+        "alignItems": "center",
+        "borderBottomLeftRadius": "60px",
+        "borderBottomRightRadius": "60px",
+        "borderTopLeftRadius": "60px",
+        "borderTopRightRadius": "60px",
+        "cursor": "pointer",
+        "height": "60px",
+        "justifyContent": "center",
+        "msFlexAlign": "center",
+        "msFlexPack": "center",
+        "msTouchAction": "manipulation",
+        "msUserSelect": "none",
+        "touchAction": "manipulation",
+        "transitionDuration": "0s",
+        "transitionProperty": "opacity",
+        "userSelect": "none",
+        "width": "60px",
+      }
+    }
+    tabIndex="0"
+  >
+    <div
+      className="css-text-901oao"
+      dir="auto"
+      style={
+        Object {
+          "fontSize": "14px",
+          "fontWeight": "bold",
+        }
+      }
+    >
+       1 week 
+    </div>
+    <div
+      className="css-text-901oao"
+      dir="auto"
+      style={
+        Object {
+          "fontSize": "14px",
+          "fontWeight": "bold",
+        }
+      }
+    >
+       early 
+    </div>
+  </div>
+</div>
+`;

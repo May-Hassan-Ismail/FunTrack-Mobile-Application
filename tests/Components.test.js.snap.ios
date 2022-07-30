@@ -1,0 +1,429 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CheckDay /> should match snapshot 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#FF9999",
+        "borderRadius": 10,
+        "justifyContent": "center",
+        "margin": 5,
+        "padding": 10,
+      },
+    ]
+  }
+>
+  <View>
+    <Text
+      style={
+        Object {
+          "color": "white",
+          "fontFamily": "Skranji_700Bold",
+          "fontSize": 25,
+        }
+      }
+    >
+       How was your day? 
+    </Text>
+  </View>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-around",
+        "minHeight": 50,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "white",
+            "fontFamily": "Skranji_700Bold",
+            "fontSize": 25,
+          }
+        }
+      >
+         1 
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "white",
+            "fontFamily": "Skranji_700Bold",
+            "fontSize": 25,
+          }
+        }
+      >
+         2 
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "white",
+            "fontFamily": "Skranji_700Bold",
+            "fontSize": 25,
+          }
+        }
+      >
+         3 
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "white",
+            "fontFamily": "Skranji_700Bold",
+            "fontSize": 25,
+          }
+        }
+      >
+         4 
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "white",
+            "fontFamily": "Skranji_700Bold",
+            "fontSize": 25,
+          }
+        }
+      >
+         5 
+      </Text>
+    </View>
+  </View>
+  <View>
+    <Text
+      style={
+        Object {
+          "color": "white",
+          "fontWeight": "bold",
+          "marginHorizontal": "34%",
+        }
+      }
+    >
+       5 is too good! 
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`<CheckReminder /> should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "flexDirection": "row",
+      "justifyContent": "space-around",
+      "width": "90%",
+    }
+  }
+>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "borderRadius": 60,
+        "height": 60,
+        "justifyContent": "center",
+        "opacity": 1,
+        "width": 60,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "fontSize": 14,
+          "fontWeight": "bold",
+        }
+      }
+    >
+       on the 
+    </Text>
+    <Text
+      style={
+        Object {
+          "fontSize": 14,
+          "fontWeight": "bold",
+        }
+      }
+    >
+       day 
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "borderRadius": 60,
+        "height": 60,
+        "justifyContent": "center",
+        "opacity": 1,
+        "width": 60,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "fontSize": 14,
+          "fontWeight": "bold",
+        }
+      }
+    >
+       1 day 
+    </Text>
+    <Text
+      style={
+        Object {
+          "fontSize": 14,
+          "fontWeight": "bold",
+        }
+      }
+    >
+       early 
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "borderRadius": 60,
+        "height": 60,
+        "justifyContent": "center",
+        "opacity": 1,
+        "width": 60,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "fontSize": 14,
+          "fontWeight": "bold",
+        }
+      }
+    >
+       2 days 
+    </Text>
+    <Text
+      style={
+        Object {
+          "fontSize": 14,
+          "fontWeight": "bold",
+        }
+      }
+    >
+       early 
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "borderRadius": 60,
+        "height": 60,
+        "justifyContent": "center",
+        "opacity": 1,
+        "width": 60,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "fontSize": 14,
+          "fontWeight": "bold",
+        }
+      }
+    >
+       3 days 
+    </Text>
+    <Text
+      style={
+        Object {
+          "fontSize": 14,
+          "fontWeight": "bold",
+        }
+      }
+    >
+       early 
+    </Text>
+  </View>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "borderRadius": 60,
+        "height": 60,
+        "justifyContent": "center",
+        "opacity": 1,
+        "width": 60,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "fontSize": 14,
+          "fontWeight": "bold",
+        }
+      }
+    >
+       1 week 
+    </Text>
+    <Text
+      style={
+        Object {
+          "fontSize": 14,
+          "fontWeight": "bold",
+        }
+      }
+    >
+       early 
+    </Text>
+  </View>
+</View>
+`;
