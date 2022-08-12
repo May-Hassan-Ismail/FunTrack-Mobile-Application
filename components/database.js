@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 
 const db = openDatabase();
 
-export let loggedIn = {}
+export let loggedIn = [{id:0}]
 export const extractLoggedInUser = () =>{
   db.transaction(async (tx)=>{
     await tx.executeSql(
@@ -75,6 +75,17 @@ export const createTables = ()=>{
    });
 }
 
+const createDefaultCategories = () =>{
+  extractLoggedInUser();
+  db.transaction(async (tx)=>{
+    await tx.executeSql(
+      "INSERT INTO categories (user_id, title, color, icon) VALUES (?,?,?,?), (?,?,?,?), (?,?,?,?), (?,?,?,?)",
+        [loggedIn[0].id, "Priorities", "pink", "calendar-today", loggedIn[0].id, "Wish List", "#66B2ff", "unicorn-variant",
+        loggedIn[0].id, "Shopping", "#B266ff", "cart-heart", loggedIn[0].id, "Exercise", "#99FF99", "run-fast"]
+    );
+  });
+}
+
 export const createUser = (username, password, navigation) =>{
   if(username != "" && password !=""){
     db.transaction(async (tx)=>{
@@ -87,6 +98,7 @@ export const createUser = (username, password, navigation) =>{
         }
       );
     });
+    createDefaultCategories();
   }
   else{
     alert("Invalid username or password!")

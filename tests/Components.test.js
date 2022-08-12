@@ -15,6 +15,7 @@ describe("<CheckDay />", () =>{
     expect(snap).toMatchSnapshot();
   })
 });
+
 describe("<CheckReminder />", () =>{
   it('should match snapshot', () =>{
     const snap = render(<CheckReminder />).toJSON();

@@ -313,13 +313,13 @@ const styles = StyleSheet.create({
   taskCont: {
     borderRadius: 10,
     margin: 5,
-    backgroundColor:'rgba(131, 167, 234, 1)',
+    backgroundColor:'pink',
     padding:10,
   },
   compTaskCont: {
     borderRadius: 10,
     margin: 5,
-    backgroundColor:'#57DBD0',
+    backgroundColor:'pink',
     padding:10,
     opacity: 0.6,
   },

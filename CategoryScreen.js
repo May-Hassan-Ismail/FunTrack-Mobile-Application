@@ -16,12 +16,7 @@ export function CategoryScreen({ navigation }) {
   const [buttonMode, setButtonMode] = useState("add");
   const [editInd, setEditInd] = useState(null);
   const [list, setList] = useState("");
-  const [listItems, setListItems]= useState([
-   //{title:"Today", color:"pink", icon:"calendar-today"},
-   //{title:"Wish List", color:"#66B2ff", icon:"unicorn-variant"},
-   //{title:"Shopping", color:"#B266ff", icon:"cart-heart"},
-   //{title:"Exercise", color:"#99FF99", icon:"run-fast"}
- ]);
+  const [listItems, setListItems]= useState([]);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('pink');
   const [items, setItems] = useState([

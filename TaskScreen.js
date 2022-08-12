@@ -70,7 +70,7 @@ export function TaskScreen({ route, navigation }) {
     retrieveData();
 
     if(route.params.mode == "add"){
-      addTask(loggedUser.id, route.params.task, route.params.category);
+      addTask(loggedIn[0].id, route.params.task, route.params.category);
       retrieveData();
     }
     if(route.params.mode == "update"){
@@ -112,7 +112,7 @@ export function TaskScreen({ route, navigation }) {
 
   const taskContainer = () =>{
     return(
-      <ScrollView style={{maxHeight:'87%'}}>
+      <ScrollView style={{maxHeight:'90%'}}>
         <View style={styles.taskCont}>
           {route.params.title == "Today" &&
             <Text style={styles.taskTitle}> {new Date().toString().slice(0, 15)}</Text>
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   taskCont: {
     borderRadius: 10,
     margin: 5,
-    backgroundColor:'rgba(131, 167, 234, 1)',
+    backgroundColor:'pink',
     padding:10,
   },
   noTaskCont:{
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
   compTaskCont: {
     borderRadius: 10,
     margin: 5,
-    backgroundColor:'#57DBD0',
+    backgroundColor:'pink',
     padding:10,
     opacity: 0.6,
   },
