@@ -28,6 +28,10 @@ Notifications.setNotificationHandler({
   },
 });
 
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 export function HomeScreen({ route, navigation }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [notificationList, setNotificationList] = useState([]);
@@ -36,14 +40,12 @@ export function HomeScreen({ route, navigation }) {
   const [overDueList, setOverDueList] = useState([]);
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
+  const [loading, setLoading] = useState(true);
   const notificationListener = useRef();
   const responseListener = useRef();
 
   useEffect(() => {
-    let isMounted = true;
-    extractLoggedInUser();
-    extractTasks(selectedDate);
-
+    setLoading(true);
     if(route.params != undefined){
       if(route.params.mode == "add" && route.params.task.date != ""){
         setSelectedDate(new Date(route.params.task.date))
@@ -56,7 +58,10 @@ export function HomeScreen({ route, navigation }) {
         extractTasks(new Date(route.params.task.date));
       }
     }
+  }, [route]);
 
+  const setup = () =>{
+    extractTasks(selectedDate);
     db.transaction(tx => {
       tx.executeSql("SELECT * FROM tasks WHERE reminder_date=? AND state='uncompleted' AND user_id = ?",
         [new Date().toString().slice(0,15), loggedIn[0].id], // passing sql query and parameters:null
@@ -103,13 +108,11 @@ export function HomeScreen({ route, navigation }) {
       return () => {
         Notifications.removeNotificationSubscription(notificationListener.current);
         Notifications.removeNotificationSubscription(responseListener.current);
-        isMounted = false
       };
     }
-  }, [route]);
+  }
 
   const extractTasks = (date)=>{
-    extractLoggedInUser();
     db.transaction(tx => {
       tx.executeSql("SELECT * FROM tasks WHERE date LIKE '%"+date.toISOString().slice(0,10)+"%' AND state='uncompleted' AND user_id=?",
         [loggedIn[0].id],
@@ -180,66 +183,58 @@ export function HomeScreen({ route, navigation }) {
   let [fontsLoaded] = useFonts({
     Skranji_700Bold,
   });
- // shows loading icon if font isn't loaded.
-  if (!fontsLoaded) {
+
+  const finish = () =>{
+    wait(200).then(() => {
+      setup();
+      setLoading(false);
+    });
+  }
+  if (loading) {
+    return <AppLoading
+           startAsync={()=> extractLoggedInUser()}
+           onFinish={()=> finish()}
+           onError={console.warn}/>;
+  }
+  // shows loading icon if font isn't loaded.
+  else if (!fontsLoaded) {
     return <AppLoading />;
   }
-  return(
-    <View style={styles.container}>
-      <CalendarStrip
-        scrollable
-        style={{height:100, paddingTop: 20, paddingBottom: 10}}
-        selectedDate={selectedDate}
-        calendarColor={'white'}
-        calendarHeaderStyle={{color: 'black'}}
-        dateNumberStyle={{color: 'black'}}
-        dateNameStyle={{color: 'black'}}
-        daySelectionAnimation={{
-            type: 'border',
-            duration: 200,
-            borderWidth: 1,
-            borderHighlightColor: 'white',
-          }}
-        highlightDateContainerStyle={
-          {backgroundColor:'#44CCFF', color: 'white'}
-        }
-        highlightDateNumberStyle={{
-          color: 'white',
-        }}
-        highlightDateNameStyle={{
-          color: 'white',
-        }}
-        iconContainer={{flex: 0.1}}
-        onDateSelected={onDateSelected}
-      />
-      <ScrollView style={{maxHeight:'73%', marginTop:'2%'}}>
-        <View style={styles.taskCont}>
-          <Text style={styles.taskTitle}> Uncompleted</Text>
-          {
-            unCompTaskList?.map((item, ind)=>{
-              if(item.date.slice(0,10)!= new Date().toISOString().slice(0,10) || item.time.slice(16,21) >= new Date().toString().slice(16,21)){
-                return(
-                  <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'}
-                    selected={false} mode="uncompleted" delFun={deleteTask} compFun={completeTask}/>
-                )
-              }
-            })
+  else{
+    return(
+      <View style={styles.container}>
+        <CalendarStrip
+          scrollable
+          style={{height:100, paddingTop: 20, paddingBottom: 10}}
+          selectedDate={selectedDate}
+          calendarColor={'white'}
+          calendarHeaderStyle={{color: 'black'}}
+          dateNumberStyle={{color: 'black'}}
+          dateNameStyle={{color: 'black'}}
+          daySelectionAnimation={{
+              type: 'border',
+              duration: 200,
+              borderWidth: 1,
+              borderHighlightColor: 'white',
+            }}
+          highlightDateContainerStyle={
+            {backgroundColor:'#44CCFF', color: 'white'}
           }
-        </View>
-        { new Date(selectedDate).toString().slice(0,16) == (new Date()).toString().slice(0,16) &&
-          <View style={ [styles.taskCont,{backgroundColor:"#FF9999"}]}>
-            <Text style={styles.taskTitle}> Overdue</Text>
-            {
-              overDueList?.map((item, ind)=>{
-                return(
-                  <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'}
-                    selected={false} mode="uncompleted" delFun={deleteTask} compFun={completeTask}/>
-                )
-              })
-            }
+          highlightDateNumberStyle={{
+            color: 'white',
+          }}
+          highlightDateNameStyle={{
+            color: 'white',
+          }}
+          iconContainer={{flex: 0.1}}
+          onDateSelected={onDateSelected}
+        />
+        <ScrollView style={{maxHeight:'73%', marginTop:'2%'}}>
+          <View style={styles.taskCont}>
+            <Text style={styles.taskTitle}> Uncompleted</Text>
             {
               unCompTaskList?.map((item, ind)=>{
-                if(item.time.slice(16,21) < new Date().toString().slice(16,21)){
+                if(item.date.slice(0,10)!= new Date().toISOString().slice(0,10) || item.time.slice(16,21) >= new Date().toString().slice(16,21)){
                   return(
                     <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'}
                       selected={false} mode="uncompleted" delFun={deleteTask} compFun={completeTask}/>
@@ -248,37 +243,60 @@ export function HomeScreen({ route, navigation }) {
               })
             }
           </View>
-        }
-        <View style={styles.compTaskCont}>
-          <Text style={styles.taskTitle}> Completed</Text>
-          {
-            compTaskList?.map((item, ind)=>{
-              return(
-                <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'}
-                  selected={true} mode="completed" delFun={deleteTask} compFun={unCompleteTask}/>
-              )
-            })
+          { new Date(selectedDate).toString().slice(0,16) == (new Date()).toString().slice(0,16) &&
+            <View style={ [styles.taskCont,{backgroundColor:"#FF9999"}]}>
+              <Text style={styles.taskTitle}> Overdue</Text>
+              {
+                overDueList?.map((item, ind)=>{
+                  return(
+                    <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'}
+                      selected={false} mode="uncompleted" delFun={deleteTask} compFun={completeTask}/>
+                  )
+                })
+              }
+              {
+                unCompTaskList?.map((item, ind)=>{
+                  if(item.time.slice(16,21) < new Date().toString().slice(16,21)){
+                    return(
+                      <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'}
+                        selected={false} mode="uncompleted" delFun={deleteTask} compFun={completeTask}/>
+                    )
+                  }
+                })
+              }
+            </View>
           }
-        </View>
-      </ScrollView>
-      <View
-          style ={styles.addTask}
-      >
-        <TouchableOpacity
-          style ={styles.addTaskButton}
-          onPress={() =>
-            navigation.navigate('AddTask', {title: "HomeScreen", date: selectedDate.toString(), task:""})}
+          <View style={styles.compTaskCont}>
+            <Text style={styles.taskTitle}> Completed</Text>
+            {
+              compTaskList?.map((item, ind)=>{
+                return(
+                  <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'}
+                    selected={true} mode="completed" delFun={deleteTask} compFun={unCompleteTask}/>
+                )
+              })
+            }
+          </View>
+        </ScrollView>
+        <View
+            style ={styles.addTask}
         >
-          <FontAwesome5
-            name="plus"
-            size={30}
-            style={{color:'#fff'}}
-          />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style ={styles.addTaskButton}
+            onPress={() =>
+              navigation.navigate('AddTask', {title: "HomeScreen", date: selectedDate.toString(), task:""})}
+          >
+            <FontAwesome5
+              name="plus"
+              size={30}
+              style={{color:'#fff'}}
+            />
+          </TouchableOpacity>
+        </View>
+        <Footer nav={navigation}/>
       </View>
-      <Footer nav={navigation}/>
-    </View>
-  )
+    )
+  }
 }
 
 const styles = StyleSheet.create({
