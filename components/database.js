@@ -16,39 +16,7 @@ export const extractLoggedInUser = () =>{
   });
 }
 extractLoggedInUser();
-const calcPerformance = (pieChart, list, pList, cList, catList) =>{
-  let sum = 0;
-  let sumComp = 0;
-  let countComp=0;
-  let countUnComp=0;
-  let countOverdue=0;
-  for(let i=0;i<list.length;i++){
-    sum+=(4-list[i].priority);
-    if(list[i].state == 'completed'){
-      countComp++;
-      sumComp+=(4-list[i].priority);
-    }
-    else if(pieChart == true){
-      if(list[i].time.slice(16,21) < new Date().toString().slice(16,21)){
-        countOverdue++;
-      }else{
-        countUnComp++;
-      }
-    }
-  }
-  if(pieChart == true){
-    catList.push(countUnComp);
-    catList.push(countComp)
-    catList.push(countOverdue)
-  }
-  cList.push(sumComp);
-  if(sum == 0){
-    pList.push(100);
-  }
-  else {
-    pList.push((sumComp/sum)*100);
-  }
-}
+
 export const createTables = ()=>{
  db.transaction(tx => {
    tx.executeSql(
@@ -72,6 +40,13 @@ export const createTables = ()=>{
        "state TEXT CHECK( state IN ('completed','uncompleted') ), "+
        "tag TEXT, priority INTEGER)"
    )
+   });
+   db.transaction(tx => {
+     tx.executeSql(
+       "CREATE TABLE IF NOT EXISTS mood (id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+         "user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, "+
+         "date TEXT, level INTEGER DEFAULT 3)"
+     )
    });
 }
 
@@ -124,7 +99,89 @@ export const authenticateUser = (username, password, navigation)  =>{
   });
 }
 
-export const extractTasks = (date, pList, cList, catList, pieChart)=>{
+export const extractUncompletedTasks = (date, list)=>{
+  db.transaction(tx => {
+    tx.executeSql("SELECT * FROM tasks WHERE date LIKE '%"+date.toISOString().slice(0,10)+"%' AND state='uncompleted' AND user_id=?",
+      [loggedIn[0].id],
+      // success callback which sends two things Transaction object and ResultSet Object
+      (txObj, { rows: { _array } }) => list = (_array),
+      // failure callback which sends two things Transaction object and Error
+      (txObj, error) => console.log('Error ', error)
+      ) // end executeSQL
+  });
+  return list;
+}
+export const extractCompletedTasks = (date)=>{
+  db.transaction(tx => {
+    tx.executeSql("SELECT * FROM tasks WHERE user_id=? AND date LIKE '%"+date.toISOString().slice(0,10)+"%' AND state='completed'",
+      [loggedIn[0].id],
+      // success callback which sends two things Transaction object and ResultSet Object
+      (txObj, { rows: { _array } }) => console.log(_array),
+      // failure callback which sends two things Transaction object and Error
+      (txObj, error) => console.log('Error ', error)
+      ) // end executeSQL
+  })
+}
+export const extractCategorizedOverdueTasks = (date)=>{
+  let taskList = [];
+  db.transaction(tx => {
+    tx.executeSql("SELECT category_id FROM tasks WHERE date<? AND state='uncompleted' AND user_id=? GROUP BY category_id ORDER BY COUNT(*) DESC",
+      [date.toISOString().slice(0,10), loggedIn[0].id],
+      // success callback which sends two things Transaction object and ResultSet Object
+      (txObj, { rows: { _array } }) => {
+        console.log(_array);
+        if(_array.length > 0){
+          for(let i=0;i<_array.length;i++){
+            console.log(_array[i].category_id)
+            tx.executeSql("SELECT * FROM tasks WHERE date<? AND state='uncompleted' AND user_id=? AND category_id =?",
+              [new Date().toISOString().slice(0,10), loggedIn[0].id, _array[i].category_id],
+              (txObj, { rows: { _array } }) =>console.log(_array),
+              (txObj, error) => console.log('Error ', error));
+          }
+        }
+      },
+      // failure callback which sends two things Transaction object and Error
+      (txObj, error) => console.log('Error ', error)
+      ) // end executeSQL
+  });
+  return taskList;
+}
+
+const calcPerformance = (pieChart, list, pList, cList, catList) =>{
+  let sum = 0;
+  let sumComp = 0;
+  let countComp=0;
+  let countUnComp=0;
+  let countOverdue=0;
+  for(let i=0;i<list.length;i++){
+    sum+=(4-list[i].priority);
+    if(list[i].state == 'completed'){
+      countComp++;
+      sumComp+=(4-list[i].priority);
+    }
+    else if(pieChart == true){
+      if(list[i].time.slice(16,21) < new Date().toString().slice(16,21)){
+        countOverdue++;
+      }else{
+        countUnComp++;
+      }
+    }
+  }
+  if(pieChart == true){
+    catList.push(countUnComp);
+    catList.push(countComp);
+    catList.push(countOverdue);
+  }
+  cList.push(sumComp);
+  if(sum == 0){
+    pList.push(100);
+  }
+  else {
+    pList.push((sumComp/sum)*100);
+  }
+}
+
+export const calcUserPerformance = (date, pList, cList, catList, pieChart)=>{
   extractLoggedInUser();
   db.transaction(tx => {
     tx.executeSql("SELECT * FROM tasks WHERE date LIKE '%"+date.toISOString().slice(0,10)+"%' AND user_id =?", [loggedIn[0].id], // passing sql query and parameters:null
@@ -178,6 +235,26 @@ export const extractTasksByCatOrTitle= (unCompTasksList, compTasksList, category
   return {unCompL:unCompTasksList, compL: compTasksList};
 }
 
+export const addMoodStatus = (user_id, date, level) =>{
+  db.transaction(async (tx)=>{
+    await tx.executeSql(
+      "SELECT * FROM mood WHERE user_id =? AND date =?", [user_id, date], // passing sql query and parameters:null
+        // success callback which sends two things Transaction object and ResultSet Object
+        (txObj, { rows: { _array } }) => {
+          if(_array.length == 0){
+            tx.executeSql(
+              "INSERT INTO mood (user_id, date, level) VALUES (?,?,?)", [user_id, date, level]);
+          }
+          else{
+            tx.executeSql("UPDATE mood SET level=? WHERE user_id =? AND date =?", [level, user_id, date]);
+          };
+        },
+        // failure callback which sends two things Transaction object and Error
+        (txObj, error) => console.log('Error ', error)
+      );
+  });
+}
+
 export const addTask = async(user_id, task, category) =>{
   if( task.name != null && task.name != ""){
     let cat_id = null;
@@ -192,12 +269,16 @@ export const addTask = async(user_id, task, category) =>{
     });
   }
 }
-export const editTask = (task, id) =>{
+export const editTask = (task, id, category) =>{
   if( task.name != null && task.name != ""){
+    let cat_id = null;
+    if(category!=""){
+      cat_id = category;
+    }
     db.transaction(async (tx)=>{
       await tx.executeSql(
-        "UPDATE tasks SET title=?, time=?, date=?, reminder_date=?, tag=?, priority=? WHERE id =?",
-        [task.name, task.time, task.date, task.rem_date, "", task.color, id]
+        "UPDATE tasks SET title=?, time=?, date=?, reminder_date=?, category_id=?, priority=? WHERE id =?",
+        [task.name, task.time, task.date, task.rem_date, cat_id, task.color, id]
       );
     });
   }

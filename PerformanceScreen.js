@@ -6,7 +6,7 @@ import { MaterialCommunityIcons, AntDesign, FontAwesome5 } from '@expo/vector-ic
 import DropDownPicker from 'react-native-dropdown-picker';
 import List from './components/List';
 import Footer from './components/Footer';
-import {extractTasks, loggedIn, extractLoggedInUser} from './components/database';
+import {calcUserPerformance, loggedIn, extractLoggedInUser} from './components/database';
 import AppLoading from 'expo-app-loading';
 import Task from './components/Task';
 import {
@@ -68,7 +68,7 @@ export function PerformanceScreen({ route, navigation }) {
   const analysis = ()=>{
     extractOverdueCount();
 
-    let listObj = extractTasks(new Date(), [], [],[], true);
+    let listObj = calcUserPerformance(new Date(), [], [],[], true);
     setCatList(listObj.catList);
 
     let performanceList= [];
@@ -81,7 +81,7 @@ export function PerformanceScreen({ route, navigation }) {
       let newD = new Date(startDate.valueOf() + 86400000 * i);
       fullDate.push(newD);
       datesList.push(newD.toString().slice(4,10));
-      fullObj = extractTasks(newD, performanceList, compCount, catList, false);
+      fullObj = calcUserPerformance(newD, performanceList, compCount, catList, false);
     }
     setDates(datesList);
     setFullDates(fullDate);

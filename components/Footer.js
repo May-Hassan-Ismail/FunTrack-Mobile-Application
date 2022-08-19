@@ -33,14 +33,16 @@ const Footer = (props) =>{
           style={{color:'#fff'}}
         />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() =>
+        props.nav.navigate('Suggestions', { title: "Suggestions Screen", date:currentDate })}
+      >
         <MaterialCommunityIcons
           name="head-lightbulb-outline"
           size={37}
           style={{color:'#fff'}}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={()=>props.nav.navigate('Category')}>
+      <TouchableOpacity onPress={()=>props.nav.navigate('Category', { title: "Category Screen", date:currentDate })}>
         <Ionicons
           name="settings"
           size={37}

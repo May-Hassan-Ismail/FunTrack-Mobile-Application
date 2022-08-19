@@ -6,7 +6,7 @@ import { MaterialCommunityIcons, AntDesign, FontAwesome5 } from '@expo/vector-ic
 import Task from './components/Task';
 import Footer from './components/Footer';
 import CheckDay from './components/CheckDay';
-import {extractTasksByCatOrTitle, addTask, editTask, loggedIn, extractLoggedInUser} from './components/database';
+import {extractTasksByCatOrTitle, addTask, editTask, loggedIn, extractLoggedInUser, addMoodStatus} from './components/database';
 import {openDatabase} from './components/OpenDatabase';
 
 const db = openDatabase();
@@ -74,7 +74,7 @@ export function TaskScreen({ route, navigation }) {
       retrieveData();
     }
     if(route.params.mode == "update"){
-      editTask(route.params.task, route.params.index);
+      editTask(route.params.task, route.params.index, route.params.category);
       retrieveData();
     }
     return () => { isMounted = false };
@@ -123,7 +123,7 @@ export function TaskScreen({ route, navigation }) {
           {
             taskItems?.map((item, ind)=>{
               return(
-                <Task task={item} key={ind} index={ind} nav={navigation} title={route.params.title}
+                <Task task={item} key={ind} index={ind} nav={navigation} title={route.params.title} navTitle={'List'}
                   selected={false} mode="uncompleted" delFun={deleteTask} compFun={completeTask}/>
               )
             })
@@ -134,14 +134,16 @@ export function TaskScreen({ route, navigation }) {
           {
             completedTasks?.map((item, ind)=>{
               return(
-                <Task task={item} key={ind} index={ind} nav={navigation} title={route.params.title}
+                <Task task={item} key={ind} index={ind} nav={navigation} title={route.params.title} navTitle={'List'}
                   selected={true} mode="completed" delFun={deleteTask} compFun={unCompleteTask}/>
               )
             })
           }
         </View>
         {route.params.title == "Today" &&
-          <CheckDay pressed={pressed} setPressed={setPressed}/>
+          <CheckDay pressed={pressed} setPressed={setPressed} addMoodStatus={addMoodStatus}
+            date={new Date().toISOString().slice(0,10)} user_id = {loggedIn[0].id}
+          />
         }
       </ScrollView>
     );
@@ -173,7 +175,7 @@ export function TaskScreen({ route, navigation }) {
           <TouchableOpacity
             style ={styles.addTaskButton}
             onPress={() =>
-              navigation.navigate('AddTask', {title: route.params.title, date:"", category: route.params.category, task:""})}
+              navigation.navigate('AddTask', {navTitle: 'List',title: route.params.title, date:"", category: route.params.category, task:""})}
           >
             <FontAwesome5
               name="plus"

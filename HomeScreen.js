@@ -54,7 +54,7 @@ export function HomeScreen({ route, navigation }) {
       }
       if(route.params.mode == "update" && route.params.task.date != ""){
         setSelectedDate(new Date(route.params.task.date))
-        editTask(route.params.task, route.params.index);
+        editTask(route.params.task, route.params.index, route.params.category);
         extractTasks(new Date(route.params.task.date));
       }
     }
@@ -236,7 +236,7 @@ export function HomeScreen({ route, navigation }) {
               unCompTaskList?.map((item, ind)=>{
                 if(item.date.slice(0,10)!= new Date().toISOString().slice(0,10) || item.time.slice(16,21) >= new Date().toString().slice(16,21)){
                   return(
-                    <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'}
+                    <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'} navTitle={'Home'}
                       selected={false} mode="uncompleted" delFun={deleteTask} compFun={completeTask}/>
                   )
                 }
@@ -249,7 +249,7 @@ export function HomeScreen({ route, navigation }) {
               {
                 overDueList?.map((item, ind)=>{
                   return(
-                    <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'}
+                    <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'} navTitle={'Home'}
                       selected={false} mode="uncompleted" delFun={deleteTask} compFun={completeTask}/>
                   )
                 })
@@ -258,7 +258,7 @@ export function HomeScreen({ route, navigation }) {
                 unCompTaskList?.map((item, ind)=>{
                   if(item.time.slice(16,21) < new Date().toString().slice(16,21)){
                     return(
-                      <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'}
+                      <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'} navTitle={'Home'}
                         selected={false} mode="uncompleted" delFun={deleteTask} compFun={completeTask}/>
                     )
                   }
@@ -271,7 +271,7 @@ export function HomeScreen({ route, navigation }) {
             {
               compTaskList?.map((item, ind)=>{
                 return(
-                  <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'}
+                  <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'} navTitle={'Home'}
                     selected={true} mode="completed" delFun={deleteTask} compFun={unCompleteTask}/>
                 )
               })
@@ -284,7 +284,7 @@ export function HomeScreen({ route, navigation }) {
           <TouchableOpacity
             style ={styles.addTaskButton}
             onPress={() =>
-              navigation.navigate('AddTask', {title: "HomeScreen", date: selectedDate.toString(), task:""})}
+              navigation.navigate('AddTask', {navTitle: 'Home', title: "HomeScreen", date: selectedDate.toString(), task:""})}
           >
             <FontAwesome5
               name="plus"

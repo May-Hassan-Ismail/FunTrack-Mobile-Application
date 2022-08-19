@@ -1,13 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView, Image, Dimensions,
-         ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, Button } from 'react-native';
+         KeyboardAvoidingView, Platform } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
-import { MaterialIcons, AntDesign, Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Footer from './components/Footer';
 import CheckReminder from './components/CheckReminder';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {loggedIn} from './components/database';
+import {openDatabase} from './components/OpenDatabase';
+const db = openDatabase();
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -17,6 +19,9 @@ const screenWidth = Dimensions.get("window").width;
    const [mode, setMode] = useState("add");
    const [index, setIndex] = useState(null);
    const [task, setTask] = useState("");
+   const [category, setCategory] = useState(route.params.category);
+   const [catList, setCatList] = useState([{}]);
+   const [catOpen, setCatOpen] = useState(false);
    const [selectedDate, setSelectedDate] = useState(new Date());
    const [pressed, setPressed]= useState(0);
    const [timePicker, setTimePicker] = useState(false);
@@ -35,14 +40,37 @@ const screenWidth = Dimensions.get("window").width;
       icon: () => <Image source={require('./assets/no.png')} style={{width:15, height:15}} />},
   ]);
 
+  const extractCategories = ()=>{
+    db.transaction(tx => {
+      // sending 4 arguments in executeSql
+      tx.executeSql('SELECT * FROM categories WHERE user_id =?', [loggedIn[0].id],
+        // success callback which sends two things Transaction object and ResultSet Object
+        (txObj, { rows: { _array } }) => createCatDataItems(_array),
+        // failure callback which sends two things Transaction object and Error
+        (txObj, error) => console.log('Error ', error)
+        ) // end executeSQL
+    });
+  }
+  const createCatDataItems = (list)=>{
+    let catArray = [];
+    list?.map((item, key)=>{
+      catArray.push({label:item.title, value: item.id, labelStyle: {color: item.color}});
+    })
+    setCatList(catArray);
+  }
+
   useEffect(() => {
-    if(route.params.title == "HomeScreen") setNavScreen('Home');
+    extractCategories();
+    //if(route.params.title == "HomeScreen") setNavScreen('Home');
+    setNavScreen(route.params.navTitle);
+    console.log(route.params.navTitle)
     if(route.params.task != ""){
       console.log(route.params.task);
       setTask(route.params.task.title);
       setSelectedDate(new Date(route.params.task.date));
       setTime(new Date(route.params.task.time));
       setValue(route.params.task.priority);
+      setCategory(route.params.task.category_id);
       setMode("update");
       setIndex(route.params.task.id);
       onInitialDate();
@@ -94,7 +122,7 @@ const screenWidth = Dimensions.get("window").width;
    return (
      <View style={styles.container}>
        <SafeAreaView style={styles.safeView}>
-         <View style={{zIndex: 2, flexDirection:'row', paddingHorizontal:10}}>
+         <View style={[Platform.OS === 'ios' ? {zIndex: 2} : {}, {flexDirection:'row', paddingHorizontal:10}]}>
            <View style ={styles.buttonSet}>
             <View>
                <DropDownPicker
@@ -114,19 +142,43 @@ const screenWidth = Dimensions.get("window").width;
                   borderWidth:0,
                   backgroundColor:'black',
                   marginRight:10,
+                  marginTop:20,
                 }}
                 dropDownContainerStyle={{
                   width: screenWidth * 0.38,
                   borderWidth:0,
+                  marginTop:20,
                 }}
               />
             </View>
-            <TouchableOpacity style={{marginRight:10,}}>
-              <FontAwesome5 name="tag" size={25} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity style={{marginRight:5,}}>
-              <MaterialIcons name="attachment" size={30} color="black" />
-            </TouchableOpacity>
+            <View style={{marginRight:1}}>
+              <DropDownPicker
+               items={catList}
+               open={catOpen}
+               setOpen={setCatOpen}
+               setValue={setCategory}
+               setItems={setCatList}
+               placeholder="C"
+               showArrowIcon={false}
+               placeholderStyle={{
+                 color: "pink",
+                 fontWeight: "bold",
+               }}
+               style={{
+                 width: 30,
+                 borderWidth:0,
+                 backgroundColor:'black',
+                 marginRight:10,
+                 marginTop:20,
+               }}
+               dropDownContainerStyle={{
+                 width: screenWidth * 0.38,
+                 backgroundColor:'black',
+                 borderWidth:0,
+                 marginTop:20,
+               }}
+             />
+            </View>
            </View>
            <KeyboardAvoidingView
                style ={styles.addTask, {flex:3}}
@@ -197,7 +249,7 @@ const screenWidth = Dimensions.get("window").width;
                   value={time}
                   mode={'time'}
                   is24Hour={false}
-                  display="default"
+                  display={Platform.OS === 'ios' ? "spinner" : "default"}
                   onChange={onTimeSelected}
                />
             )}
@@ -215,13 +267,13 @@ const screenWidth = Dimensions.get("window").width;
               <Text style={styles.buttonText}>Clear</Text>
             </TouchableOpacity>
             <TouchableOpacity style ={[styles.button, {marginLeft:'30%'}]} onPress={() =>
-              navigation.navigate(navScreen, { title: route.params.title, category: route.params.category,
+              navigation.navigate(navScreen, { title: route.params.title, category: category,
                  mode: mode, index: index, contMode:route.params.mode,
                  task:{name:"", date:"", time: "", color:"", rem_date:""}})}>
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity style ={styles.button} onPress={() =>
-              navigation.navigate(navScreen, { title: route.params.title, category: route.params.category,
+              navigation.navigate(navScreen, { title: route.params.title, category: category,
                  mode: mode, index: index, contMode:route.params.mode,
                  task:{name:task, date:new Date(selectedDate).toISOString(), time: time.toString(), color:value,
                    rem_date: new Date(new Date(selectedDate).valueOf() - 86400000 * pressed).toString().slice(0,15) } })}>
@@ -267,9 +319,6 @@ const screenWidth = Dimensions.get("window").width;
      borderWidth: 1,
      marginTop:20,
    },
-   textStyle: {
-    margin: 10,
-  },
   DatePick:{
     backgroundColor:'#ebf4bd',
     marginHorizontal:10,

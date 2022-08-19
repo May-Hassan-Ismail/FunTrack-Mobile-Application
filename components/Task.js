@@ -40,7 +40,7 @@ const Task = (props) =>{
           />
         </TouchableOpacity>
         <TouchableOpacity style={{marginLeft: '2%'}} onPress={() =>
-          props.nav.navigate('AddTask', {title: props.title, category:props.task.category_id,
+          props.nav.navigate('AddTask', {navTitle: props.navTitle, title: props.title, category:props.task.category_id,
             task: props.task, index:props.index, mode:props.mode})}
         >
           <AntDesign

@@ -13,6 +13,7 @@ import { CategoryScreen } from './CategoryScreen.js';
 import { TaskScreen } from './TaskScreen.js';
 import { AddTaskScreen } from './AddTask.js';
 import { PerformanceScreen } from './PerformanceScreen.js';
+import { SuggestionsScreen } from './SuggestionsScreen.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -76,6 +77,7 @@ export default function App() {
           <Stack.Screen name="List" component={TaskScreen} />
           <Stack.Screen name="AddTask" component={AddTaskScreen} />
           <Stack.Screen name="Performance" component={PerformanceScreen} />
+          <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     );

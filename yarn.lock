@@ -5877,6 +5877,11 @@
   "resolved" "https://registry.npmjs.org/join-component/-/join-component-1.1.0.tgz"
   "version" "1.1.0"
 
+"js-regression@^1.0.10":
+  "integrity" "sha512-NfZ+16kreh7xmQwq2zFT28ebYPt/EmlSmOAKKwHCe+kUeW4/VgrkhETDHnG4X/oihG6Kwc2Zg3rw6fe1z2mnYA=="
+  "resolved" "https://registry.npmjs.org/js-regression/-/js-regression-1.0.10.tgz"
+  "version" "1.0.10"
+
 "js-tokens@^3.0.0 || ^4.0.0", "js-tokens@^4.0.0":
   "integrity" "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ=="
   "resolved" "https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz"
