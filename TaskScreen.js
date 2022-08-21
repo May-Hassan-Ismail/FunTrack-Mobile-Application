@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   taskCont: {
     borderRadius: 10,
     margin: 5,
-    backgroundColor:'pink',
+    backgroundColor:'#E0F5B6',
     padding:10,
   },
   noTaskCont:{
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   compTaskCont: {
     borderRadius: 10,
     margin: 5,
-    backgroundColor:'pink',
+    backgroundColor:'#90C2C2',
     padding:10,
     opacity: 0.6,
   },
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     width:60,
     height:60,
     borderRadius: 60,
-    backgroundColor:'#33AAFF',
+    backgroundColor:'#206B6B',
     alignItems:'center',
     justifyContent: 'center',
     borderColor: '#C0C0C0',
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
   },
   taskTitle:{
     fontFamily: "Skranji_700Bold",
-    fontSize: 25,
-    color:'white'
+    fontSize: 20,
+    color:'black'
   },
 });

@@ -18,12 +18,12 @@ export function CategoryScreen({ navigation }) {
   const [list, setList] = useState("");
   const [listItems, setListItems]= useState([]);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('pink');
+  const [value, setValue] = useState('#FFBEBE');
   const [items, setItems] = useState([
-    {label: '', value: '#66B2ff', icon: () => <View style={[styles.colorIcon,{backgroundColor:"#66B2ff"}]} />},
-    {label: '', value: 'pink', icon: () => <View style={[styles.colorIcon,{backgroundColor:"pink"}]} />},
-    {label: '', value: '#B266ff', icon: () => <View style={[styles.colorIcon, {backgroundColor:"#B266ff"}]} />},
-    {label: '', value: '#99FF99', icon: () => <View style={[styles.colorIcon, {backgroundColor:"#99FF99"}]} />},
+    {label: '', value: '#FFBEBE', icon: () => <View style={[styles.colorIcon,{backgroundColor:"#FFBEBE"}]} />},
+    {label: '', value: '#90C2C2', icon: () => <View style={[styles.colorIcon,{backgroundColor:"#90C2C2"}]} />},
+    {label: '', value: '#A7E0A7', icon: () => <View style={[styles.colorIcon, {backgroundColor:"#A7E0A7"}]} />},
+    {label: '', value: '#E0F5B6', icon: () => <View style={[styles.colorIcon, {backgroundColor:"#E0F5B6"}]} />},
  ]);
  const [headerState, setHeaderState] = React.useState(-1);
  const [searchInput, setSearchInput] = React.useState("");
@@ -115,7 +115,7 @@ export function CategoryScreen({ navigation }) {
         <View style={styles.usernameCont}>
           <FontAwesome5
             name="user-alt"
-            size={30}
+            size={27}
             style={{color:'#fff', marginRight: 10}}
           />
           {
@@ -185,7 +185,7 @@ export function CategoryScreen({ navigation }) {
               placeholder="C"
               showArrowIcon={false}
               placeholderStyle={{
-                color: "pink",
+                color: "#FFBEBE",
                 fontWeight: "bold",
               }}
               style={{
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   usernameCont:{
-    backgroundColor:'#33AAFF',
+    backgroundColor:'#206B6B',
     height:'15%',
     paddingHorizontal: 15,
     alignItems:'center',
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     width:60,
     height:60,
     borderRadius: 60,
-    backgroundColor:'#33AAFF',
+    backgroundColor:'#206B6B',
     alignItems:'center',
     justifyContent: 'center',
     borderColor: '#C0C0C0',
@@ -283,8 +283,9 @@ const styles = StyleSheet.create({
   },
   title:{
     fontFamily: "Skranji_700Bold",
-    fontSize: 30,
+    fontSize: 27,
     width:'67%',
+    color: 'white',
   },
   colorIcon:{
     width:20,

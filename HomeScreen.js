@@ -218,7 +218,7 @@ export function HomeScreen({ route, navigation }) {
               borderHighlightColor: 'white',
             }}
           highlightDateContainerStyle={
-            {backgroundColor:'#44CCFF', color: 'white'}
+            {backgroundColor:'#206B6B', color: 'white'}
           }
           highlightDateNumberStyle={{
             color: 'white',
@@ -244,7 +244,7 @@ export function HomeScreen({ route, navigation }) {
             }
           </View>
           { new Date(selectedDate).toString().slice(0,16) == (new Date()).toString().slice(0,16) &&
-            <View style={ [styles.taskCont,{backgroundColor:"#FF9999"}]}>
+            <View style={ [styles.taskCont,{backgroundColor:"#FFBEBE"}]}>
               <Text style={styles.taskTitle}> Overdue</Text>
               {
                 overDueList?.map((item, ind)=>{
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     width:60,
     height:60,
     borderRadius: 60,
-    backgroundColor:'#33AAFF',
+    backgroundColor:'#206B6B',
     alignItems:'center',
     justifyContent: 'center',
     borderColor: '#C0C0C0',
@@ -325,19 +325,19 @@ const styles = StyleSheet.create({
   },
   taskTitle:{
     fontFamily: "Skranji_700Bold",
-    fontSize: 25,
-    color:'white'
+    fontSize: 20,
+    color:'black'
   },
   taskCont: {
     borderRadius: 10,
     margin: 5,
-    backgroundColor:'rgba(131, 167, 234, 1)',
+    backgroundColor:'#E0F5B6',
     padding:10,
   },
   compTaskCont: {
     borderRadius: 10,
     margin: 5,
-    backgroundColor:'#57DBD0',
+    backgroundColor:'#90C2C2',
     padding:10,
     opacity: 0.6,
   },

@@ -55,8 +55,8 @@ const createDefaultCategories = (db) =>{
   db.transaction(async (tx)=>{
     await tx.executeSql(
       "INSERT INTO categories (user_id, title, color, icon) VALUES (?,?,?,?), (?,?,?,?), (?,?,?,?), (?,?,?,?)",
-        [loggedIn[0].id, "Priorities", "pink", "calendar-today", loggedIn[0].id, "Wish List", "#66B2ff", "unicorn-variant",
-        loggedIn[0].id, "Shopping", "#B266ff", "cart-heart", loggedIn[0].id, "Exercise", "#99FF99", "run-fast"]
+        [loggedIn[0].id, "Priorities", "#FFBEBE", "calendar-today", loggedIn[0].id, "Wish List", "#90C2C2", "unicorn-variant",
+        loggedIn[0].id, "Shopping", "#A7E0A7", "cart-heart", loggedIn[0].id, "Exercise", "#E0F5B6", "run-fast"]
     );
   });
 }
@@ -66,14 +66,16 @@ export const createUser = (username, password, navigation, db) =>{
     db.transaction(async (tx)=>{
       await tx.executeSql(
         "INSERT INTO users (username, password, state) VALUES (?,?,?)", [username, password, 'loggedin'],
-        (txObj, { rows: { _array } }) => navigation.navigate('Home', { title: "HomeScreen"}),
+        (txObj, { rows: { _array } }) => {
+          navigation.navigate('Home', { title: "HomeScreen"});
+          createDefaultCategories(db);
+        },
         // failure callback which sends two things Transaction object and Error
         (txObj, error) => {
-          alert(error);
+          alert("Invalid username, an account with the same username already exists!")
         }
       );
     });
-    createDefaultCategories(db);
   }
   else{
     alert("Invalid username or password!")

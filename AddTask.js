@@ -20,7 +20,7 @@ const screenWidth = Dimensions.get("window").width;
    const [index, setIndex] = useState(null);
    const [task, setTask] = useState("");
    const [category, setCategory] = useState(route.params.category);
-   const [catList, setCatList] = useState([{label:"placeholder", value: 1, labelStyle: {color: 'pink'}}]);
+   const [catList, setCatList] = useState([{label:"placeholder", value: 1, labelStyle: {color: '#FFBEBE'}}]);
    const [catOpen, setCatOpen] = useState(false);
    const [selectedDate, setSelectedDate] = useState(new Date());
    const [pressed, setPressed]= useState(0);
@@ -87,7 +87,7 @@ const screenWidth = Dimensions.get("window").width;
     if(date != "" ){
       const obj={
         date:new Date(date),
-        style: {backgroundColor: '#44CCFF'},
+        style: {backgroundColor: '#90C2C2'},
         textStyle: {color: 'black'},
         containerStyle: [],
         allowDisabled: true,
@@ -132,7 +132,7 @@ const screenWidth = Dimensions.get("window").width;
                 placeholder="P"
                 showArrowIcon={false}
                 placeholderStyle={{
-                  color: "pink",
+                  color: "#FFBEBE",
                   fontWeight: "bold",
                 }}
                 style={{
@@ -159,7 +159,7 @@ const screenWidth = Dimensions.get("window").width;
                placeholder="C"
                showArrowIcon={false}
                placeholderStyle={{
-                 color: "pink",
+                 color: "#FFBEBE",
                  fontWeight: "bold",
                }}
                style={{
@@ -214,8 +214,8 @@ const screenWidth = Dimensions.get("window").width;
              ]}
              previousTitle="Previous"
              nextTitle="Next"
-             todayBackgroundColor="#FF9999"
-             selectedDayColor="#44CCFF"
+             todayBackgroundColor="#FFBEBE"
+             selectedDayColor="#90C2C2"
              selectedDayTextColor="#000000"
              scaleFactor={375}
              textStyle={{
@@ -293,7 +293,7 @@ const screenWidth = Dimensions.get("window").width;
    title:{
      fontFamily: "Skranji_700Bold",
      fontSize: 20,
-     color:'#130F85',
+     color:'#206B6B',
    },
    headCont:{
      flexDirection:'column',
@@ -311,7 +311,7 @@ const screenWidth = Dimensions.get("window").width;
    input: {
      paddingVertical: 10,
      paddingHorizontal: 15,
-     backgroundColor:'#99bbff',
+     backgroundColor:'#C7E3E3',
      borderRadius: 60,
      borderColor: '#C0C0C0',
      borderWidth: 1,
@@ -347,7 +347,7 @@ const screenWidth = Dimensions.get("window").width;
     height:screenHeight*0.06,
   },
   button:{
-    backgroundColor:'pink',
+    backgroundColor:'#FFBEBE',
     margin:5,
     paddingHorizontal:5,
     borderRadius: 10,
@@ -355,6 +355,6 @@ const screenWidth = Dimensions.get("window").width;
   buttonText:{
     fontFamily: "Skranji_700Bold",
     fontSize: 20,
-    color:'#130F85',
+    color:'#206B6B',
   },
  });

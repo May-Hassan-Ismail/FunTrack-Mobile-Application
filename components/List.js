@@ -10,31 +10,31 @@ const List = (props) =>{
         (props.list.icon != "" && <MaterialCommunityIcons
           name={props.list.icon}
           size={30}
-          style={{color:'#fff', marginRight: 10}}
+          style={{color:'#000', marginRight: 10}}
         />)
       }
       {
         (props.list.icon == "" && <MaterialCommunityIcons
           name="clipboard-list"
           size={30}
-          style={{color:'#fff', marginRight: 10}}
+          style={{color:'#000', marginRight: 10}}
         />)
       }
         <Text style={styles.taskTxt}> {props.list.title} </Text>
       </View>
       <View style={styles.taskIcons}>
-        <TouchableOpacity onPress={()=>props.delFun(props.list.id)}>
-          <MaterialCommunityIcons
-            name="trash-can"
-            size={30}
-            style={{color:'#fff'}}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={{marginLeft: '2%'}} onPress={()=>props.editFun(props.list.id)}>
+        <TouchableOpacity style={{marginRight: '7%'}} onPress={()=>props.editFun(props.list.id)}>
           <AntDesign
             name="edit"
             size={30}
-            style={{color:'#fff'}}
+            style={{color:'#000'}}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={()=>props.delFun(props.list.id)}>
+          <MaterialCommunityIcons
+            name="delete"
+            size={30}
+            style={{color:'#000'}}
           />
         </TouchableOpacity>
       </View>

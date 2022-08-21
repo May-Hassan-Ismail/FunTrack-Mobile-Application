@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
   },
   checkCont:{
-    backgroundColor: '#44CCFF',
+    backgroundColor: '#C7E3E3',
     width:60,
     height:60,
     borderRadius: 60,

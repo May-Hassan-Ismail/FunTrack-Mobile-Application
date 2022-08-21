@@ -35,14 +35,14 @@ const styles = StyleSheet.create({
   taskCont: {
     borderRadius: 10,
     margin: 5,
-    backgroundColor:'#FF9999',
+    backgroundColor:'#FFBEBE',
     padding:10,
     justifyContent:'center',
   },
   taskTitle:{
     fontFamily: "Skranji_700Bold",
-    fontSize: 25,
-    color:'white'
+    fontSize: 20,
+    color:'black'
   },
   dayCheck:{
     flexDirection:'row',
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     minHeight:50,
   },
   checkCont:{
-    backgroundColor: '#44CCFF',
+    backgroundColor: '#D86161',
     width:50,
     height:50,
     borderRadius: 50,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   subTitle:{
     marginHorizontal:"34%",
-    color: 'white',
+    color: 'black',
     fontWeight: 'bold',
   },
 });

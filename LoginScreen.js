@@ -151,6 +151,6 @@ const styles = StyleSheet.create({
    alignItems:"center",
    justifyContent:"center",
    marginTop:40,
-   backgroundColor:"#33AAFF",
+   backgroundColor:"#0191F7",
  }
 })

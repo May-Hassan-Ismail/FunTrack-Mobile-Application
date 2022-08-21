@@ -181,7 +181,7 @@ export function SuggestionsScreen({ route, navigation }) {
           }
           {
             overDueList.length >0 &&
-            <View style={[styles.taskCont, {backgroundColor:"pink"}]}>
+            <View style={[styles.taskCont, {backgroundColor:"#C7E3E3"}]}>
               <Text style={styles.taskTitle}> Finish those to be more Satisfied</Text>
               {
                 overDueList?.map((item, ind)=>{
@@ -195,7 +195,7 @@ export function SuggestionsScreen({ route, navigation }) {
           }
           {
             pomodoroList.length >0 &&
-            <View style={styles.taskCont}>
+            <View style={[styles.taskCont, {backgroundColor:"#A7E0A7"}]}>
               <Text style={styles.taskTitle}> Spend just 15 mins in: </Text>
               {
                 pomodoroList?.map((item, ind)=>{
@@ -228,12 +228,12 @@ const styles = StyleSheet.create({
   taskTitle:{
     fontFamily: "Skranji_700Bold",
     fontSize: 15,
-    color:'white'
+    color:'black'
   },
   taskCont: {
     borderRadius: 10,
     margin: 5,
-    backgroundColor:'#99CCFF',
+    backgroundColor:'#E0F5B6',
     padding:10,
   },
 });

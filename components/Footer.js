@@ -11,7 +11,7 @@ const Footer = (props) =>{
         props.nav.navigate('Home', { title: "HomeScreen", date:currentDate })}>
         <Ionicons
           name="calendar"
-          size={37}
+          size={35}
           style={{color:'#fff'}}
         />
       </TouchableOpacity>
@@ -20,7 +20,7 @@ const Footer = (props) =>{
       >
         <AntDesign
           name="areachart"
-          size={37}
+          size={35}
           style={{color:'#fff'}}
         />
       </TouchableOpacity>
@@ -29,7 +29,7 @@ const Footer = (props) =>{
       >
         <FontAwesome5
           name="calendar-check"
-          size={37}
+          size={35}
           style={{color:'#fff'}}
         />
       </TouchableOpacity>
@@ -38,14 +38,14 @@ const Footer = (props) =>{
       >
         <MaterialCommunityIcons
           name="head-lightbulb-outline"
-          size={37}
+          size={35}
           style={{color:'#fff'}}
         />
       </TouchableOpacity>
       <TouchableOpacity onPress={()=>props.nav.navigate('Category', { title: "Category Screen", date:currentDate })}>
         <Ionicons
           name="settings"
-          size={37}
+          size={35}
           style={{color:'#fff'}}
         />
       </TouchableOpacity>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     position:'absolute',
     bottom:0,
     width:'100%',
-    backgroundColor:'#33AAFF',
+    backgroundColor:'#206B6B',
     height: screenHeight*0.073,
     flexDirection: 'row',
     alignItems:'center',

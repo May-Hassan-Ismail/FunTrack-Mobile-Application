@@ -112,21 +112,21 @@ export function PerformanceScreen({ route, navigation }) {
             data={[{
                 name: "Uncompleted",
                 population: catList[0],
-                color: "rgba(131, 167, 234, 1)",
+                color: "#A5CA5A",
                 legendFontColor: "#7F7F7F",
                 legendFontSize: 15
             },
             {
                 name: "Completed",
                 population: catList[1],
-                color: "#57DBD0",
+                color: "#3A8282",
                 legendFontColor: "#7F7F7F",
                 legendFontSize: 15
             },
             {
                 name: "Overdue",
                 population: (catList[2]+overDueCount),
-                color: "#FF9999",
+                color: "#D86161",
                 legendFontColor: "#7F7F7F",
                 legendFontSize: 15
             }]}
@@ -169,8 +169,8 @@ export function PerformanceScreen({ route, navigation }) {
             yAxisInterval={1}
             fromZero={true}
             chartConfig={{
-              backgroundGradientFrom: "#33AAFF",
-              backgroundGradientTo: "#ffa726",
+              backgroundGradientFrom: "#E0F5B6",
+              backgroundGradientTo: "#90C2C2",
               decimalPlaces: 0, // optional, defaults to 2dp
               color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
               labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -180,7 +180,7 @@ export function PerformanceScreen({ route, navigation }) {
               propsForDots: {
                 r: "6",
                 strokeWidth: "2",
-                stroke: "#ffa726"
+                stroke: "#90C2C2"
               }
             }}
             style={{
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
   },
   taskTitle:{
     fontFamily: "Skranji_700Bold",
-    fontSize: 25,
+    fontSize: 20,
     color:'black',
   },
   chartCont:{
