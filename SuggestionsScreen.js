@@ -3,14 +3,14 @@ import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView, Image,
          ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import {extractUncompletedTasks, extractCategorizedOverdueTasks, calcUserPerformance, editTask,
-        loggedIn, extractLoggedInUser} from './components/database';
+        loggedIn} from './components/database';
 import { LinearRegression } from 'js-regression';
 import {openDatabase} from './components/OpenDatabase';
 import AppLoading from 'expo-app-loading';
 import Task from './components/Task';
 import Footer from './components/Footer';
 
-const db = openDatabase();
+const db = openDatabase('db.TodoDB');
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }
@@ -33,7 +33,7 @@ export function SuggestionsScreen({ route, navigation }) {
     setLoading(true);
     if(route.params != undefined){
       if(route.params.mode == "update" && route.params.task.date != ""){
-        editTask(route.params.task, route.params.index, route.params.category);
+        editTask(route.params.task, route.params.index, route.params.category, db);
       }
     }
 
@@ -54,7 +54,7 @@ export function SuggestionsScreen({ route, navigation }) {
           // success callback which sends two things Transaction object and ResultSet Object
           (txObj, { rows: { _array } }) =>{
             _array.map((item, key)=>{
-              fullObj = calcUserPerformance(new Date(item.date), performanceList, compCount, catList, false);
+              fullObj = calcUserPerformance(new Date(item.date), performanceList, compCount, catList, false, db);
               moodLevels.push(item.level);
             });
             setMoodX(fullObj.performL);
@@ -151,7 +151,7 @@ export function SuggestionsScreen({ route, navigation }) {
           {
             unCompTaskList.length >0 &&
               <View style={styles.taskCont}>
-                <Text style={styles.taskTitle}> Finish those and elevate your mood </Text>
+                <Text style={styles.taskTitle}> Finish those and elevate your mood 📈</Text>
                 {
                   data.length > 0 &&
                   <Text style={styles.taskTitle}> from {Math.round(regression.transform([0]))} to {Math.round(regression.transform([1]))}</Text>
@@ -167,9 +167,16 @@ export function SuggestionsScreen({ route, navigation }) {
               </View>
           }
           {
-            unCompTaskList.length ==0 &&
+            unCompTaskList.length ==0 && data.length > 0 &&
               <View style={styles.taskCont}>
                 <Text style={styles.taskTitle}> Today's expected mood is {Math.round(regression.transform([1]))}</Text>
+              </View>
+          }
+          {
+            unCompTaskList.length ==0 && data.length == 0 &&
+              <View style={styles.taskCont}>
+                <Text style={styles.taskTitle}> No enough data to expect the today's mood</Text>
+                <Text> Please, help us help you by letting us know your everyday mood level</Text>
               </View>
           }
           {

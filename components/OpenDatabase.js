@@ -1,6 +1,6 @@
 import { Platform } from "react-native";
 import * as SQLite from 'expo-sqlite';
-export function openDatabase() {
+export function openDatabase(database_name) {
   if (Platform.OS === "web") {
     return {
       transaction: () => {
@@ -11,6 +11,6 @@ export function openDatabase() {
     };
   }
 
-  const db = SQLite.openDatabase('db.TodoDB');
+  const db = SQLite.openDatabase(database_name);
   return db;
 }

@@ -9,7 +9,7 @@ import Footer from './components/Footer';
 import {openDatabase} from './components/OpenDatabase';
 import {loggedIn, extractLoggedInUser} from './components/database';
 
-const db = openDatabase();
+const db = openDatabase('db.TodoDB');
 
 export function CategoryScreen({ navigation }) {
   // stores the task name.
@@ -35,7 +35,7 @@ export function CategoryScreen({ navigation }) {
    navigation.navigate('Login', { pass: ""})
  }
  const refData = ()=>{
-   extractLoggedInUser();
+   extractLoggedInUser(db);
    db.transaction(tx => {
      // sending 4 arguments in executeSql
      tx.executeSql('SELECT * FROM categories WHERE user_id =?', [loggedIn[0].id],

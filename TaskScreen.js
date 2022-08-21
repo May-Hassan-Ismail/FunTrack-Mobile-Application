@@ -9,7 +9,7 @@ import CheckDay from './components/CheckDay';
 import {extractTasksByCatOrTitle, addTask, editTask, loggedIn, extractLoggedInUser, addMoodStatus} from './components/database';
 import {openDatabase} from './components/OpenDatabase';
 
-const db = openDatabase();
+const db = openDatabase('db.TodoDB');
 
 export function TaskScreen({ route, navigation }) {
   // stores the task name.
@@ -25,7 +25,7 @@ export function TaskScreen({ route, navigation }) {
     setTaskItems(fullTasks.unCompL);
     setCompletedTasks(fullTasks.compL);
     */
-    extractLoggedInUser();
+    extractLoggedInUser(db);
     if(route.params.category != null){
       db.transaction(tx => {
         tx.executeSql("SELECT * FROM tasks WHERE state='uncompleted' AND category_id=? AND user_id=?",
@@ -70,11 +70,11 @@ export function TaskScreen({ route, navigation }) {
     retrieveData();
 
     if(route.params.mode == "add"){
-      addTask(loggedIn[0].id, route.params.task, route.params.category);
+      addTask(loggedIn[0].id, route.params.task, route.params.category, db);
       retrieveData();
     }
     if(route.params.mode == "update"){
-      editTask(route.params.task, route.params.index, route.params.category);
+      editTask(route.params.task, route.params.index, route.params.category, db);
       retrieveData();
     }
     return () => { isMounted = false };
@@ -142,7 +142,7 @@ export function TaskScreen({ route, navigation }) {
         </View>
         {route.params.title == "Today" &&
           <CheckDay pressed={pressed} setPressed={setPressed} addMoodStatus={addMoodStatus}
-            date={new Date().toISOString().slice(0,10)} user_id = {loggedIn[0].id}
+            date={new Date().toISOString().slice(0,10)} user_id = {loggedIn[0].id} db={db}
           />
         }
       </ScrollView>

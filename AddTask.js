@@ -9,7 +9,7 @@ import CheckReminder from './components/CheckReminder';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {loggedIn} from './components/database';
 import {openDatabase} from './components/OpenDatabase';
-const db = openDatabase();
+const db = openDatabase('db.TodoDB');
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -20,7 +20,7 @@ const screenWidth = Dimensions.get("window").width;
    const [index, setIndex] = useState(null);
    const [task, setTask] = useState("");
    const [category, setCategory] = useState(route.params.category);
-   const [catList, setCatList] = useState([{}]);
+   const [catList, setCatList] = useState([{label:"placeholder", value: 1, labelStyle: {color: 'pink'}}]);
    const [catOpen, setCatOpen] = useState(false);
    const [selectedDate, setSelectedDate] = useState(new Date());
    const [pressed, setPressed]= useState(0);
@@ -63,9 +63,7 @@ const screenWidth = Dimensions.get("window").width;
     extractCategories();
     //if(route.params.title == "HomeScreen") setNavScreen('Home');
     setNavScreen(route.params.navTitle);
-    console.log(route.params.navTitle)
     if(route.params.task != ""){
-      console.log(route.params.task);
       setTask(route.params.task.title);
       setSelectedDate(new Date(route.params.task.date));
       setTime(new Date(route.params.task.time));

@@ -7819,6 +7819,11 @@
   dependencies:
     "jsesc" "~0.5.0"
 
+"regression@^2.0.1":
+  "integrity" "sha512-A4XYsc37dsBaNOgEjkJKzfJlE394IMmUPlI/p3TTI9u3T+2a+eox5Pr/CPUqF0eszeWZJPAc6QkroAhuUpWDJQ=="
+  "resolved" "https://registry.npmjs.org/regression/-/regression-2.0.1.tgz"
+  "version" "2.0.1"
+
 "remove-trailing-separator@^1.0.1":
   "integrity" "sha512-/hS+Y0u3aOfIETiaiirUFwDBDzmXPvO+jAfKTitUngIPzdKc6Z0LoFjM/CK5PL4C+eKwHohlHAb6H0VFfmmUsw=="
   "resolved" "https://registry.npmjs.org/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz"

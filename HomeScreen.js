@@ -14,7 +14,7 @@ import {schedulePushNotification, registerForPushNotificationsAsync} from './com
 import Task from './components/Task';
 import Constants from "expo-constants";
 
-const db = openDatabase();
+const db = openDatabase('db.TodoDB');
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -49,12 +49,12 @@ export function HomeScreen({ route, navigation }) {
     if(route.params != undefined){
       if(route.params.mode == "add" && route.params.task.date != ""){
         setSelectedDate(new Date(route.params.task.date))
-        addTask(loggedIn[0].id, route.params.task, route.params.category);
+        addTask(loggedIn[0].id, route.params.task, route.params.category, db);
         extractTasks(new Date(route.params.task.date));
       }
       if(route.params.mode == "update" && route.params.task.date != ""){
         setSelectedDate(new Date(route.params.task.date))
-        editTask(route.params.task, route.params.index, route.params.category);
+        editTask(route.params.task, route.params.index, route.params.category, db);
         extractTasks(new Date(route.params.task.date));
       }
     }
@@ -192,7 +192,7 @@ export function HomeScreen({ route, navigation }) {
   }
   if (loading) {
     return <AppLoading
-           startAsync={()=> extractLoggedInUser()}
+           startAsync={()=> extractLoggedInUser(db)}
            onFinish={()=> finish()}
            onError={console.warn}/>;
   }
@@ -331,13 +331,13 @@ const styles = StyleSheet.create({
   taskCont: {
     borderRadius: 10,
     margin: 5,
-    backgroundColor:'pink',
+    backgroundColor:'rgba(131, 167, 234, 1)',
     padding:10,
   },
   compTaskCont: {
     borderRadius: 10,
     margin: 5,
-    backgroundColor:'pink',
+    backgroundColor:'#57DBD0',
     padding:10,
     opacity: 0.6,
   },

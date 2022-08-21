@@ -19,7 +19,7 @@ import {
 } from "react-native-chart-kit";
 import {openDatabase} from './components/OpenDatabase';
 
-const db = openDatabase();
+const db = openDatabase('db.TodoDB');
 const screenWidth = Dimensions.get("window").width*0.95;
 
 const wait = (timeout) => {
@@ -54,7 +54,7 @@ export function PerformanceScreen({ route, navigation }) {
     analysis();
   }
   const extractOverdueCount = () =>{
-    extractLoggedInUser();
+    extractLoggedInUser(db);
     db.transaction(tx => {
       tx.executeSql("SELECT COUNT(*) as c FROM tasks WHERE date<? AND state='uncompleted' AND user_id = ?",
         [new Date().toISOString().slice(0,10), loggedIn[0].id],
@@ -68,7 +68,7 @@ export function PerformanceScreen({ route, navigation }) {
   const analysis = ()=>{
     extractOverdueCount();
 
-    let listObj = calcUserPerformance(new Date(), [], [],[], true);
+    let listObj = calcUserPerformance(new Date(), [], [],[], true, db);
     setCatList(listObj.catList);
 
     let performanceList= [];
@@ -81,7 +81,7 @@ export function PerformanceScreen({ route, navigation }) {
       let newD = new Date(startDate.valueOf() + 86400000 * i);
       fullDate.push(newD);
       datesList.push(newD.toString().slice(4,10));
-      fullObj = calcUserPerformance(newD, performanceList, compCount, catList, false);
+      fullObj = calcUserPerformance(newD, performanceList, compCount, catList, false, db);
     }
     setDates(datesList);
     setFullDates(fullDate);

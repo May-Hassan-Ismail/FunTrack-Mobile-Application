@@ -5,7 +5,7 @@ import AppLoading from 'expo-app-loading';
 import {createTables} from './components/database';
 import {openDatabase} from './components/OpenDatabase';
 
-const db = openDatabase();
+const db = openDatabase('db.TodoDB');
 // importing all the screens.
 import { HomeScreen } from './HomeScreen.js';
 import { LoginScreen } from './LoginScreen.js';
@@ -27,7 +27,7 @@ export default function App() {
 
   useEffect(() => {
     let isMounted = true;
-    createTables();
+    createTables(db);
     db.transaction(async (tx)=>{
       await tx.executeSql(
         "SELECT * FROM users WHERE state = 'loggedin'", null, // passing sql query and parameters:null

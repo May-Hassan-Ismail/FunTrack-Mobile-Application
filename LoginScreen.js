@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Text, TextInput, Alert, TouchableOpacity } from 'react-native';
-import {createUser, extraceLoggedInUser, authenticateUser} from './components/database';
+import {createUser, authenticateUser} from './components/database';
 import { useFonts, Skranji_700Bold } from '@expo-google-fonts/skranji';
 import AppLoading from 'expo-app-loading';
+import {openDatabase} from './components/OpenDatabase';
+
+const db = openDatabase('db.TodoDB');
 
 export function LoginScreen({route, navigation }) {
   const [login, setLogin] = useState(true);
@@ -56,7 +59,7 @@ export function LoginScreen({route, navigation }) {
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}
           onPress={() =>
-            authenticateUser(name, password, navigation)}
+            authenticateUser(name, password, navigation, db)}
         >
           <Text> Login </Text>
         </TouchableOpacity>
@@ -90,7 +93,7 @@ export function LoginScreen({route, navigation }) {
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}
           onPress={() =>
-            createUser(name, password, navigation)}
+            createUser(name, password, navigation, db)}
         >
           <Text> Sign up </Text>
         </TouchableOpacity>

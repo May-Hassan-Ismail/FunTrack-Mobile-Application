@@ -1,10 +1,10 @@
 import {openDatabase} from './OpenDatabase';
 import { Alert } from 'react-native';
 
-const db = openDatabase();
+const datab = openDatabase('db.TodoDB');
 
 export let loggedIn = [{id:0}]
-export const extractLoggedInUser = () =>{
+export const extractLoggedInUser = (db) =>{
   db.transaction(async (tx)=>{
     await tx.executeSql(
       "SELECT * FROM users WHERE state = 'loggedin'", null, // passing sql query and parameters:null
@@ -15,9 +15,9 @@ export const extractLoggedInUser = () =>{
       );
   });
 }
-extractLoggedInUser();
+extractLoggedInUser(datab);
 
-export const createTables = ()=>{
+export const createTables = (db)=>{
  db.transaction(tx => {
    tx.executeSql(
      "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT, " +
@@ -50,8 +50,8 @@ export const createTables = ()=>{
    });
 }
 
-const createDefaultCategories = () =>{
-  extractLoggedInUser();
+const createDefaultCategories = (db) =>{
+  extractLoggedInUser(db);
   db.transaction(async (tx)=>{
     await tx.executeSql(
       "INSERT INTO categories (user_id, title, color, icon) VALUES (?,?,?,?), (?,?,?,?), (?,?,?,?), (?,?,?,?)",
@@ -61,7 +61,7 @@ const createDefaultCategories = () =>{
   });
 }
 
-export const createUser = (username, password, navigation) =>{
+export const createUser = (username, password, navigation, db) =>{
   if(username != "" && password !=""){
     db.transaction(async (tx)=>{
       await tx.executeSql(
@@ -73,14 +73,14 @@ export const createUser = (username, password, navigation) =>{
         }
       );
     });
-    createDefaultCategories();
+    createDefaultCategories(db);
   }
   else{
     alert("Invalid username or password!")
   }
 }
 
-export const authenticateUser = (username, password, navigation)  =>{
+export const authenticateUser = (username, password, navigation, db)  =>{
   db.transaction(async (tx)=>{
     await tx.executeSql(
       "SELECT * FROM users WHERE username =?", [username], // passing sql query and parameters:null
@@ -99,7 +99,7 @@ export const authenticateUser = (username, password, navigation)  =>{
   });
 }
 
-export const extractUncompletedTasks = (date, list)=>{
+export const extractUncompletedTasks = (date, list, db)=>{
   db.transaction(tx => {
     tx.executeSql("SELECT * FROM tasks WHERE date LIKE '%"+date.toISOString().slice(0,10)+"%' AND state='uncompleted' AND user_id=?",
       [loggedIn[0].id],
@@ -111,7 +111,7 @@ export const extractUncompletedTasks = (date, list)=>{
   });
   return list;
 }
-export const extractCompletedTasks = (date)=>{
+export const extractCompletedTasks = (date, db)=>{
   db.transaction(tx => {
     tx.executeSql("SELECT * FROM tasks WHERE user_id=? AND date LIKE '%"+date.toISOString().slice(0,10)+"%' AND state='completed'",
       [loggedIn[0].id],
@@ -122,7 +122,7 @@ export const extractCompletedTasks = (date)=>{
       ) // end executeSQL
   })
 }
-export const extractCategorizedOverdueTasks = (date)=>{
+export const extractCategorizedOverdueTasks = (date, db)=>{
   let taskList = [];
   db.transaction(tx => {
     tx.executeSql("SELECT category_id FROM tasks WHERE date<? AND state='uncompleted' AND user_id=? GROUP BY category_id ORDER BY COUNT(*) DESC",
@@ -181,8 +181,8 @@ const calcPerformance = (pieChart, list, pList, cList, catList) =>{
   }
 }
 
-export const calcUserPerformance = (date, pList, cList, catList, pieChart)=>{
-  extractLoggedInUser();
+export const calcUserPerformance = (date, pList, cList, catList, pieChart, db)=>{
+  extractLoggedInUser(db);
   db.transaction(tx => {
     tx.executeSql("SELECT * FROM tasks WHERE date LIKE '%"+date.toISOString().slice(0,10)+"%' AND user_id =?", [loggedIn[0].id], // passing sql query and parameters:null
       // success callback which sends two things Transaction object and ResultSet Object
@@ -194,7 +194,7 @@ export const calcUserPerformance = (date, pList, cList, catList, pieChart)=>{
   return {performL:pList, countList: cList, catList: catList};
 }
 
-export const extractTasksByCatOrTitle= (unCompTasksList, compTasksList, category, title)=>{
+export const extractTasksByCatOrTitle= (unCompTasksList, compTasksList, category, title, db)=>{
   if(category != null){
     db.transaction(tx => {
       tx.executeSql("SELECT * FROM tasks WHERE state='uncompleted' AND category_id=?", [category], // passing sql query and parameters:null
@@ -235,7 +235,7 @@ export const extractTasksByCatOrTitle= (unCompTasksList, compTasksList, category
   return {unCompL:unCompTasksList, compL: compTasksList};
 }
 
-export const addMoodStatus = (user_id, date, level) =>{
+export const addMoodStatus = (user_id, date, level, db) =>{
   db.transaction(async (tx)=>{
     await tx.executeSql(
       "SELECT * FROM mood WHERE user_id =? AND date =?", [user_id, date], // passing sql query and parameters:null
@@ -255,7 +255,7 @@ export const addMoodStatus = (user_id, date, level) =>{
   });
 }
 
-export const addTask = async(user_id, task, category) =>{
+export const addTask = async(user_id, task, category, db) =>{
   if( task.name != null && task.name != ""){
     let cat_id = null;
     if(category!=""){
@@ -269,12 +269,13 @@ export const addTask = async(user_id, task, category) =>{
     });
   }
 }
-export const editTask = (task, id, category) =>{
+export const editTask = (task, id, category, db) =>{
   if( task.name != null && task.name != ""){
     let cat_id = null;
     if(category!=""){
       cat_id = category;
     }
+    console.log(task)
     db.transaction(async (tx)=>{
       await tx.executeSql(
         "UPDATE tasks SET title=?, time=?, date=?, reminder_date=?, category_id=?, priority=? WHERE id =?",

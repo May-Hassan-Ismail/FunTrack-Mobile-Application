@@ -3,24 +3,24 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const CheckDay = (props) =>{
   return (
-    <View style={[styles.taskCont]}>
+    <View style={styles.taskCont}>
       <View>
         <Text style={styles.taskTitle}> How was your day? </Text>
       </View>
       <View style ={styles.dayCheck}>
-        <TouchableOpacity style ={ props.pressed == 1 && styles.checkCont} onPress={()=>{props.setPressed(1); props.addMoodStatus(props.user_id, props.date, 1);}}>
+        <TouchableOpacity style ={ props.pressed == 1 && styles.checkCont} onPress={()=>{props.setPressed(1); props.addMoodStatus(props.user_id, props.date, 1, props.db);}}>
           <Text style={styles.taskTitle}> 1 </Text>
         </TouchableOpacity>
-        <TouchableOpacity style ={ props.pressed == 2 && styles.checkCont} onPress={()=>{props.setPressed(2); props.addMoodStatus(props.user_id, props.date, 2);}}>
+        <TouchableOpacity style ={ props.pressed == 2 && styles.checkCont} onPress={()=>{props.setPressed(2); props.addMoodStatus(props.user_id, props.date, 2, props.db);}}>
           <Text style={styles.taskTitle}> 2 </Text>
         </TouchableOpacity>
-        <TouchableOpacity style ={ props.pressed == 3 && styles.checkCont} onPress={()=>{props.setPressed(3); props.addMoodStatus(props.user_id, props.date, 3);}}>
+        <TouchableOpacity style ={ props.pressed == 3 && styles.checkCont} onPress={()=>{props.setPressed(3); props.addMoodStatus(props.user_id, props.date, 3, props.db);}}>
           <Text style={styles.taskTitle}> 3 </Text>
         </TouchableOpacity>
-        <TouchableOpacity style ={ props.pressed == 4 && styles.checkCont} onPress={()=>{props.setPressed(4); props.addMoodStatus(props.user_id, props.date, 4);}}>
+        <TouchableOpacity style ={ props.pressed == 4 && styles.checkCont} onPress={()=>{props.setPressed(4); props.addMoodStatus(props.user_id, props.date, 4, props.db);}}>
           <Text style={styles.taskTitle}> 4 </Text>
         </TouchableOpacity>
-        <TouchableOpacity style ={ props.pressed == 5 && styles.checkCont} onPress={()=>{props.setPressed(5); props.addMoodStatus(props.user_id, props.date, 5);}}>
+        <TouchableOpacity style ={ props.pressed == 5 && styles.checkCont} onPress={()=>{props.setPressed(5); props.addMoodStatus(props.user_id, props.date, 5, props.db);}}>
           <Text style={styles.taskTitle}> 5 </Text>
         </TouchableOpacity>
       </View>
