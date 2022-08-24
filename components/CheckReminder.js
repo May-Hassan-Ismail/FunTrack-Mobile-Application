@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 const CheckReminder = (props) =>{
   return (
     <View style ={styles.rowSet}>
+     {/* on press, the setPress function which passed with the props is called with the value that the component represents */}
       <TouchableOpacity style ={ props.pressed == 0 ? styles.checkCont: styles.notCheckCont} onPress={()=>props.setPressed(0)}>
         <Text style={styles.reminderTitle}> on the </Text>
         <Text style={styles.reminderTitle}> day </Text>

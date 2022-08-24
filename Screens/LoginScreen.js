@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Text, TextInput, Alert, TouchableOpacity } from 'react-native';
-import {createUser, authenticateUser} from './components/database';
 import { useFonts, Skranji_700Bold } from '@expo-google-fonts/skranji';
 import AppLoading from 'expo-app-loading';
-import {openDatabase} from './components/OpenDatabase';
+import {createUser, authenticateUser} from '../components/database';
+import {openDatabase} from '../components/OpenDatabase';
 
+// open the TodoDB database
 const db = openDatabase('db.TodoDB');
 
 export function LoginScreen({route, navigation }) {
+  // login state for either displaying the Login screen if it's true or the Signup screen if it's false.
   const [login, setLogin] = useState(true);
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -30,76 +32,64 @@ export function LoginScreen({route, navigation }) {
   if (!fontsLoaded) {
     return <AppLoading />;
   }
-
-  if(login){
-    return (
-      <View style={styles.container}>
-        <View style={styles.head}>
-          <Image style= {styles.logo} source = {require("./assets/Logo.png")}/>
-          <Text style={styles.title}>FunTrack</Text>
-        </View>
-        <View style={styles.inputView}>
-          <TextInput
-              style={styles.TextInput}
-              placeholder='Enter your name'
-              onChangeText={(value) => setName(value)}
-              value = {name}
-          />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput
-              style={styles.TextInput}
-              placeholder='Enter your password'
-              onChangeText={(value) => setPassword(value)}
-              value = {password}
-          />
-        </View>
+  return (
+    <View style={styles.container}>
+      <View style={styles.head}>
+        <Image style= {styles.logo} source = {require("../assets/Logo.png")}/>
+        <Text style={styles.title}>FunTrack</Text>
+      </View>
+      <View style={styles.inputView}>
+        <TextInput
+            style={styles.TextInput}
+            placeholder='Enter your name'
+            onChangeText={(value) => setName(value)}
+            value = {name}
+        />
+      </View>
+      <View style={styles.inputView}>
+        <TextInput
+            style={styles.TextInput}
+            placeholder='Enter your password'
+            onChangeText={(value) => setPassword(value)}
+            value = {password}
+        />
+      </View>
+      {/* Create new account clickable component appears only in the login screen */}
+      {
+        login &&
         <TouchableOpacity onPress={() => setLogin(false)}>
           <Text style={styles.signup_button}>Create New Account?</Text>
         </TouchableOpacity>
+      }
+      {/* Login to existing Account clickable component appears only in the login screen */}
+      {
+        login==false &&
+        <TouchableOpacity onPress={() => setLogin(true)}>
+          <Text style={styles.signup_button}>Login to existing Account?</Text>
+        </TouchableOpacity>
+      }
+      {/* Login button only appears in the Login screen and calls authenticateUser function on user click. */}
+      {
+        login &&
         <TouchableOpacity style={styles.button}
           onPress={() =>
             authenticateUser(name, password, navigation, db)}
         >
-          <Text> Login </Text>
+          <Text style={styles.buttonTxt}> Login </Text>
         </TouchableOpacity>
-      </View>
-    )
-  }else{
-    return (
-      <View style={styles.container} >
-      <View style={styles.head}>
-        <Image style= {styles.logo} source = {require("./assets/Logo.png")}/>
-        <Text style={styles.title}>FunTrack</Text>
-      </View>
-        <View style={styles.inputView}>
-          <TextInput
-              style={styles.TextInput}
-              placeholder='Enter your name'
-              onChangeText={(value) => setName(value)}
-              value = {name}
-          />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput
-              style={styles.TextInput}
-              placeholder='Enter your password'
-              onChangeText={(value) => setPassword(value)}
-              value = {password}
-          />
-        </View>
-        <TouchableOpacity onPress={() => setLogin(true)}>
-          <Text style={styles.signup_button}>Login to existing Account?</Text>
-        </TouchableOpacity>
+      }
+      {/* Signup button only appears in the Signup screen and calls createUser function on user click. */}
+      {
+        login==false &&
         <TouchableOpacity style={styles.button}
           onPress={() =>
             createUser(name, password, navigation, db)}
         >
-          <Text> Sign up </Text>
+          <Text style={styles.buttonTxt}> Sign up </Text>
         </TouchableOpacity>
-      </View>
-    )
-  }
+      }
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -125,9 +115,10 @@ const styles = StyleSheet.create({
     marginRight: '15%',
     fontFamily: "Skranji_700Bold",
     fontSize: 35,
+    color: '#206B6B'
   },
   inputView: {
-   backgroundColor: "#FFC0CB",
+   backgroundColor: "#D3F1D3",
    borderRadius: 30,
    width: "70%",
    height: 45,
@@ -151,6 +142,9 @@ const styles = StyleSheet.create({
    alignItems:"center",
    justifyContent:"center",
    marginTop:40,
-   backgroundColor:"#0191F7",
+   backgroundColor:"#206B6B",
+ },
+ buttonTxt:{
+   color: 'white',
  }
-})
+});

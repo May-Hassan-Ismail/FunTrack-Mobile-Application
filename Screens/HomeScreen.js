@@ -1,3 +1,4 @@
+import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect, useRef} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, SafeAreaView, Button,
          KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, ScrollView, Platform } from 'react-native';
@@ -5,67 +6,89 @@ import CalendarStrip from 'react-native-calendar-strip';
 import { useFonts, Skranji_700Bold } from '@expo-google-fonts/skranji';
 import { MaterialCommunityIcons, AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
-import Footer from './components/Footer';
-import {openDatabase} from './components/OpenDatabase';
-import {addTask, editTask, loggedIn, extractLoggedInUser} from './components/database';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
-import {schedulePushNotification, registerForPushNotificationsAsync} from './components/Notifications'
-import Task from './components/Task';
-import Constants from "expo-constants";
+import Footer from '../components/Footer';
+import {openDatabase} from '../components/OpenDatabase';
+import {addTask, editTask, loggedIn, extractLoggedInUser} from '../components/database';
+import {schedulePushNotification, registerForPushNotificationsAsync} from '../components/Notifications'
+import Task from '../components/Task';
 
+// opens the TodoDB database.
 const db = openDatabase('db.TodoDB');
 
+// enavling notification alert and sound.
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
   }),
-  handleSuccess: notificationIdentifier => {
-    // dismiss notification immediately after it is presented
-    //setTimeout(() => Notifications.dismissNotificationAsync(notificationIdentifier), 100);
-  },
 });
 
+// timer function for rendering the page after waiting for the data to be returned from the database.
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
 export function HomeScreen({ route, navigation }) {
+  // holds the date selected from the horizontal calendar.
   const [selectedDate, setSelectedDate] = useState(new Date());
+  // holds the list of all tasks that the user should be notified for.
   const [notificationList, setNotificationList] = useState([]);
+  // holds the list of uncompleted tasks in the selected date.
   const [unCompTaskList, setUnCompTaskList] = useState([]);
+  // holds the list of completed tasks in the selected date.
   const [compTaskList, setCompTaskList] = useState([]);
+  // holds the list of overdue tasks until the selected date.
   const [overDueList, setOverDueList] = useState([]);
+  // saves the token for pushing new notifications to the user.
   const [expoPushToken, setExpoPushToken] = useState('');
+  // holds the fired notification.
   const [notification, setNotification] = useState(false);
+  // loading state for waiting until the data is extracted from the database then it became false.
   const [loading, setLoading] = useState(true);
+  // userRef for persisting the notification listener value between renders.
   const notificationListener = useRef();
+  // userRef for persisting the response listener value between renders.
   const responseListener = useRef();
 
   useEffect(() => {
+    // resets the lists.
+    setCompTaskList([]);
+    setUnCompTaskList([]);
+    setOverDueList([]);
+    // start with the loading state being true until data is extracted from the database.
     setLoading(true);
     if(route.params != undefined){
       if(route.params.mode == "add" && route.params.task.date != ""){
+        // selecting the task's date from the horizontal calendar to show the added task.
         setSelectedDate(new Date(route.params.task.date))
+        // calls the add task function to add the task to the tasks table
         addTask(loggedIn[0].id, route.params.task, route.params.category, db);
+        // extract the tasks of the different categories after the date is changed and the task is added to the database.
         extractTasks(new Date(route.params.task.date));
       }
       if(route.params.mode == "update" && route.params.task.date != ""){
+        // selecting the task's date from the horizontal calendar to show the edited task.
         setSelectedDate(new Date(route.params.task.date))
+        // calls the edit task function to edit the task in the tasks table
         editTask(route.params.task, route.params.index, route.params.category, db);
+        // extract the tasks of the different categories after the date is changed and the task is edited.
         extractTasks(new Date(route.params.task.date));
       }
     }
   }, [route]);
 
   const setup = () =>{
+    // extract the tasks of the different categories with the selected date.
     extractTasks(selectedDate);
+    // extract the list of tasks of the loggen in user and which state is uncompleted and the reminder_date is today.
+    // A new notification will be pushed for each task of those to notify the user.
     db.transaction(tx => {
       tx.executeSql("SELECT * FROM tasks WHERE reminder_date=? AND state='uncompleted' AND user_id = ?",
-        [new Date().toString().slice(0,15), loggedIn[0].id], // passing sql query and parameters:null
-        // success callback which sends two things Transaction object and ResultSet Object
+        [new Date().toString().slice(0,15), loggedIn[0].id],
+        // assigns the ResultSet Object to the notificationList.
         (txObj, { rows: { _array } }) => setNotificationList(_array),
         // failure callback which sends two things Transaction object and Error
         (txObj, error) => console.log('Error ', error)
@@ -73,6 +96,8 @@ export function HomeScreen({ route, navigation }) {
     });
 
     if (Platform.OS != "web") {
+      // set categories for the notification to create responsive notification.
+      // each notification has 2 buttons, ok and mark and each has different responses.
       Notifications.setNotificationCategoryAsync("actions", [
         { buttonTitle: "OK 🆗", identifier: "OK" },
         { buttonTitle: "Mark ✔", identifier: "Mark" },
@@ -80,6 +105,7 @@ export function HomeScreen({ route, navigation }) {
       .then((_category) => {})
       .catch((error) => console.log('Could not have set notification category', error));
 
+      // loops through the list of tasks the user should be notified with and a new notfication is pushed for each task.
       notificationList?.map((item)=>{
         schedulePushNotification(item);
       })
@@ -97,9 +123,12 @@ export function HomeScreen({ route, navigation }) {
       // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
       responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
         //console.log(response);
+        // the notification is dismissed if the user clicks on the notification or any of its buttons.
         if (response.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER) {
           Notifications.dismissNotificationAsync(response.notification.request.identifier);
         }
+        // if the user clicks on the Mark button, the referred task will be marked as completed.
+        // Also the selected date will be the date of that task to show the task after being marked to the user.
         if(response.actionIdentifier == 'Mark'){
           completeTask(response.notification.request.content.data.id);
           setSelectedDate(new Date(response.notification.request.content.data.date));
@@ -114,18 +143,20 @@ export function HomeScreen({ route, navigation }) {
 
   const extractTasks = (date)=>{
     db.transaction(tx => {
+      // selecting the list of tasks of the entered date which state is uncompleted and which belongs to the logged in user.
       tx.executeSql("SELECT * FROM tasks WHERE date LIKE '%"+date.toISOString().slice(0,10)+"%' AND state='uncompleted' AND user_id=?",
         [loggedIn[0].id],
-        // success callback which sends two things Transaction object and ResultSet Object
+        // the result object is assigned to the unCompTaskList.
         (txObj, { rows: { _array } }) => setUnCompTaskList(_array),
         // failure callback which sends two things Transaction object and Error
         (txObj, error) => console.log('Error ', error)
         ) // end executeSQL
     })
     db.transaction(tx => {
+      // selecting the list of tasks of the entered date which state is completed and which belongs to the logged in user.
       tx.executeSql("SELECT * FROM tasks WHERE user_id=? AND date LIKE '%"+date.toISOString().slice(0,10)+"%' AND state='completed'",
         [loggedIn[0].id],
-        // success callback which sends two things Transaction object and ResultSet Object
+        // the result object is assigned to the compTaskList.
         (txObj, { rows: { _array } }) => setCompTaskList(_array),
         // failure callback which sends two things Transaction object and Error
         (txObj, error) => console.log('Error ', error)
@@ -133,9 +164,10 @@ export function HomeScreen({ route, navigation }) {
     })
 
     db.transaction(tx => {
+      // selecting the list of tasks which dates are less than the selected date (overDue) and which belongs to the loggedin user.
       tx.executeSql("SELECT * FROM tasks WHERE date<? AND state='uncompleted' AND user_id=?",
         [new Date().toISOString().slice(0,10), loggedIn[0].id],
-        // success callback which sends two things Transaction object and ResultSet Object
+        // the result object is assigned to the overDueList.
         (txObj, { rows: { _array } }) => setOverDueList(_array),
         // failure callback which sends two things Transaction object and Error
         (txObj, error) => console.log('Error ', error)
@@ -147,18 +179,21 @@ export function HomeScreen({ route, navigation }) {
   const onDateSelected = (date) => {
    const currentDate = date || selectedDate;
    setSelectedDate(currentDate);
+   // calling the extract task function with the selected date as the input to update the screen after changing the date.
    extractTasks(currentDate);
   };
 
+  // deleting the task from the tasks table by its id.
   const deleteTask = (id) =>{
     db.transaction(async (tx)=>{
       await tx.executeSql(
         "DELETE FROM tasks WHERE id =?", [id]
       );
     });
+    // calling the extract task function with the selected date to update the screen after deleting the task.
     extractTasks(selectedDate);
   }
-  // marks the task as completed
+  // marks the task as completed by updating its state to the value completed.
   const completeTask = (id) =>{
     db.transaction(async (tx)=>{
       await tx.executeSql(
@@ -166,9 +201,10 @@ export function HomeScreen({ route, navigation }) {
         ['completed', id]
       );
     });
+    // calling the extract task function with the selected date to update the screen after marking the task as completed.
     extractTasks(selectedDate);
   }
-  // un mark the task to be uncompleted.
+  // marks the task as uncompleted by updating its state to the value uncompleted.
   const unCompleteTask = (id) =>{
     db.transaction(async (tx)=>{
       await tx.executeSql(
@@ -176,6 +212,7 @@ export function HomeScreen({ route, navigation }) {
         ['uncompleted', id]
       );
     });
+    // calling the extract task function with the selected date to update the screen after marking the task as uncompleted.
     extractTasks(selectedDate);
   }
 
@@ -184,12 +221,16 @@ export function HomeScreen({ route, navigation }) {
     Skranji_700Bold,
   });
 
+  // function for waiting until the logged in user is extracted from the database then setup function is called.
   const finish = () =>{
     wait(200).then(() => {
+      // call setup to do all the data fetching for the logged in user to display his/her data.
       setup();
+      // set loading to false to render the screen after finishing all the needed processes.
       setLoading(false);
     });
   }
+  // if the state is loading do all the processes then the state will be changed after finishing.
   if (loading) {
     return <AppLoading
            startAsync={()=> extractLoggedInUser(db)}
@@ -200,9 +241,11 @@ export function HomeScreen({ route, navigation }) {
   else if (!fontsLoaded) {
     return <AppLoading />;
   }
+  // rendering the screen if the loading state is false.
   else{
     return(
       <View style={styles.container}>
+        {/* The horizontal calendar component */}
         <CalendarStrip
           scrollable
           style={{height:100, paddingTop: 20, paddingBottom: 10}}
@@ -230,11 +273,13 @@ export function HomeScreen({ route, navigation }) {
           onDateSelected={onDateSelected}
         />
         <ScrollView style={{maxHeight:'73%', marginTop:'2%'}}>
+        {/* The container of the uncompleted tasks */}
+        {/* if the uncompleted task is for today and its time is before the current time, it's an overdue not uncompleted task */}
           <View style={styles.taskCont}>
             <Text style={styles.taskTitle}> Uncompleted</Text>
             {
               unCompTaskList?.map((item, ind)=>{
-                if(item.date.slice(0,10)!= new Date().toISOString().slice(0,10) || item.time.slice(16,21) >= new Date().toString().slice(16,21)){
+                if(new Date(item.date).toString().slice(0,15)!= new Date().toString().slice(0,15) || item.time.slice(16,21) >= new Date().toString().slice(16,21)){
                   return(
                     <Task task={item} key={ind} index={ind} nav={navigation} title={'HomeScreen'} navTitle={'Home'}
                       selected={false} mode="uncompleted" delFun={deleteTask} compFun={completeTask}/>
@@ -243,6 +288,7 @@ export function HomeScreen({ route, navigation }) {
               })
             }
           </View>
+          {/* The overdue container appears only if the selected date is today */}
           { new Date(selectedDate).toString().slice(0,16) == (new Date()).toString().slice(0,16) &&
             <View style={ [styles.taskCont,{backgroundColor:"#FFBEBE"}]}>
               <Text style={styles.taskTitle}> Overdue</Text>
@@ -254,6 +300,7 @@ export function HomeScreen({ route, navigation }) {
                   )
                 })
               }
+              {/* if there is an uncompleted task but its time is less than the current time, it will also be displayed in the overdue container */}
               {
                 unCompTaskList?.map((item, ind)=>{
                   if(item.time.slice(16,21) < new Date().toString().slice(16,21)){
@@ -266,6 +313,7 @@ export function HomeScreen({ route, navigation }) {
               }
             </View>
           }
+          {/* The container of the completed tasks */}
           <View style={styles.compTaskCont}>
             <Text style={styles.taskTitle}> Completed</Text>
             {
@@ -278,6 +326,7 @@ export function HomeScreen({ route, navigation }) {
             }
           </View>
         </ScrollView>
+        {/* The add task button that navigates to the addTask screen passing the page title anf the navTitle props */}
         <View
             style ={styles.addTask}
         >
@@ -293,7 +342,9 @@ export function HomeScreen({ route, navigation }) {
             />
           </TouchableOpacity>
         </View>
+        {/* Adding the footer component with passing the navigation object as a prop */}
         <Footer nav={navigation}/>
+        <StatusBar barStyle="light-content" backgroundColor= '#f4f6fc' />
       </View>
     )
   }

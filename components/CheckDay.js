@@ -8,6 +8,8 @@ const CheckDay = (props) =>{
         <Text style={styles.taskTitle}> How was your day? </Text>
       </View>
       <View style ={styles.dayCheck}>
+        {/* different style appears only if the user chooses the component by pressing on it */}
+        {/* on user press, the press state is set to the component number and the addMoodStatus function is called to add or update the mood level to the moods table in the database */}
         <TouchableOpacity style ={ props.pressed == 1 && styles.checkCont} onPress={()=>{props.setPressed(1); props.addMoodStatus(props.user_id, props.date, 1, props.db);}}>
           <Text style={styles.taskTitle}> 1 </Text>
         </TouchableOpacity>
@@ -25,7 +27,7 @@ const CheckDay = (props) =>{
         </TouchableOpacity>
       </View>
       <View>
-        <Text style={styles.subTitle}> 5 is too good! </Text>
+        <Text style={styles.subTitle}> 5 is Excellent! </Text>
       </View>
     </View>
   );

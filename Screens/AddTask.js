@@ -4,53 +4,73 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView, Imag
 import CalendarPicker from 'react-native-calendar-picker';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Footer from './components/Footer';
-import CheckReminder from './components/CheckReminder';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {loggedIn} from './components/database';
-import {openDatabase} from './components/OpenDatabase';
+import Footer from '../components/Footer';
+import CheckReminder from '../components/CheckReminder';
+import {loggedIn} from '../components/database';
+import {openDatabase} from '../components/OpenDatabase';
+
+// opens the TodoDB database.
 const db = openDatabase('db.TodoDB');
 
+// use dimensions for getting the screen's width, and height to make the application responsive.
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
- export function AddTaskScreen({ route, navigation }) {
 
+ export function AddTaskScreen({ route, navigation }) {
+   // stores the custom style for the selected date in the calendar.
    const [customStyle, setCustomStyle] = useState([{}]);
+   // switches the mode between add and edit.
    const [mode, setMode] = useState("add");
+   // stores the task index if the mode is edit and there's a task to be updated.
    const [index, setIndex] = useState(null);
+   // stores the task to be updated when the mode is edit.
    const [task, setTask] = useState("");
+   // stores the category of the task to be updated, when the mode is edit.
    const [category, setCategory] = useState(route.params.category);
+   // stores the list of categories for the user to choose a category for the task to be added/edited.
    const [catList, setCatList] = useState([{label:"placeholder", value: 1, labelStyle: {color: '#FFBEBE'}}]);
+   // state to handle opening and closing the category dropdown menu.
    const [catOpen, setCatOpen] = useState(false);
+   // stores the selected date in the calendar picker.
    const [selectedDate, setSelectedDate] = useState(new Date());
+   // state for selecting the reminder date.
    const [pressed, setPressed]= useState(0);
+   // state to handle opening and closing the time picker.
    const [timePicker, setTimePicker] = useState(false);
+   // stores the time picked from the time picker.
    const [time, setTime] = useState(new Date(Date.now()));
+   // state to handle opening and closing the priority dropdown menu.
    const [open, setOpen] = useState(false);
+   // value of the priority and the default is number 3 which means no priority.
    const [value, setValue] = useState("3");
+   // stores the screen the user is navigated from to navigate to after adding/editing the task.
    const [navScreen, setNavScreen] = useState('List');
+   // priority items list which contains the options of the priority levels for the user to choose from.
    const [items, setItems] = useState([
      {label: 'High Priority', value: '0', labelStyle: {color: "red"},
-      icon: () => <Image source={require('./assets/high.png')} style={{width:15, height:15}} />},
+      icon: () => <Image source={require('../assets/high.png')} style={{width:15, height:15}} />},
      {label: 'Medium Priority', value: '1', labelStyle: {color: "black"},
-      icon: () => <Image source={require('./assets/medium.png')} style={{width:15, height:15}} />},
+      icon: () => <Image source={require('../assets/medium.png')} style={{width:15, height:15}} />},
      {label: 'Low Priority', value: '2', labelStyle: {color: "blue"},
-      icon: () => <Image source={require('./assets/low.png')} style={{width:15, height:15}} />},
+      icon: () => <Image source={require('../assets/low.png')} style={{width:15, height:15}} />},
      {label: 'No Priority', value: '3', labelStyle: {color: "grey"},
-      icon: () => <Image source={require('./assets/no.png')} style={{width:15, height:15}} />},
+      icon: () => <Image source={require('../assets/no.png')} style={{width:15, height:15}} />},
   ]);
 
+  // function extracts the user's categories to add them to the dropdown menu for the user to choose from.
   const extractCategories = ()=>{
     db.transaction(tx => {
-      // sending 4 arguments in executeSql
       tx.executeSql('SELECT * FROM categories WHERE user_id =?', [loggedIn[0].id],
-        // success callback which sends two things Transaction object and ResultSet Object
+        // calls the createCatDataItems for creating the list of categories for the dropdown menu.
         (txObj, { rows: { _array } }) => createCatDataItems(_array),
         // failure callback which sends two things Transaction object and Error
         (txObj, error) => console.log('Error ', error)
-        ) // end executeSQL
+        )
     });
   }
+
+  // creates the list of categories for the dropdown menu, including the label, value and style of each category.
   const createCatDataItems = (list)=>{
     let catArray = [];
     list?.map((item, key)=>{
@@ -61,8 +81,10 @@ const screenWidth = Dimensions.get("window").width;
 
   useEffect(() => {
     extractCategories();
-    //if(route.params.title == "HomeScreen") setNavScreen('Home');
+    // set the navigation screen to the screen which the user is navigated from.
     setNavScreen(route.params.navTitle);
+    // if there is a task in the route's parameters, then the user is navigated to the AddTask screen to edit a task so the mode is set to update.
+    // all the values are set to the values of the task to be updated, including the time, title, date, category, priority, id, and reminder_date.
     if(route.params.task != ""){
       setTask(route.params.task.title);
       setSelectedDate(new Date(route.params.task.date));
@@ -75,6 +97,8 @@ const screenWidth = Dimensions.get("window").width;
       setPressed(Math.floor((new Date(route.params.task.date) -
                  new Date(route.params.task.reminder_date))/ (24*3600*1000)));
     }
+    // if there's no task but the route's parameters contains a specific date, then the user is navigated from the HomeScreen.
+    // the selected date will be set to that date for adding a task with the same date that the user selected in the Homescreen.
     else if(route.params.date != ""){
       setSelectedDate(new Date(route.params.date));
       onInitialDate();
@@ -83,7 +107,8 @@ const screenWidth = Dimensions.get("window").width;
 
   // if there's an initial date a custom style will be added to it.
   const onInitialDate = () =>{
-    let date = route.params.task.date|| route.params.date;
+    let date = route.params.task.date || route.params.date;
+    // custom style object will be created for that date and it will appear in the calendar picker.
     if(date != "" ){
       const obj={
         date:new Date(date),
@@ -96,7 +121,7 @@ const screenWidth = Dimensions.get("window").width;
     }
   }
 
-  //function to handle the date change
+  // function to handle the date change in the calendar picker.
   const onDateChange = (date) => {
    const currentDate = date || selectedDate;
    setSelectedDate(currentDate);
@@ -116,12 +141,15 @@ const screenWidth = Dimensions.get("window").width;
     setSelectedDate(new Date());
     setPressed(0);
     setTimePicker(false);
+    setValue("3");
   }
    return (
      <View style={styles.container}>
        <SafeAreaView style={styles.safeView}>
-         <View style={[Platform.OS === 'ios' ? {zIndex: 2} : {}, {flexDirection:'row', paddingHorizontal:10}]}>
+        {/* I had issue with ios that the dropdown menu wasn't overlapping the other components so I adjusted this by styling */}
+         <View style={[Platform.OS === 'ios' ? {zIndex: 2} : {}, styles.searchCont]}>
            <View style ={styles.buttonSet}>
+           {/* Priority dropdown menu */}
             <View>
                <DropDownPicker
                 items={items}
@@ -132,23 +160,23 @@ const screenWidth = Dimensions.get("window").width;
                 placeholder="P"
                 showArrowIcon={false}
                 placeholderStyle={{
-                  color: "#FFBEBE",
+                  color: "white",
                   fontWeight: "bold",
                 }}
                 style={{
                   width: 30,
                   borderWidth:0,
-                  backgroundColor:'black',
-                  marginRight:10,
-                  marginTop:20,
+                  backgroundColor:'#206B6B',
+                  marginRight:"2%",
                 }}
                 dropDownContainerStyle={{
                   width: screenWidth * 0.38,
                   borderWidth:0,
-                  marginTop:20,
+                  marginVertical:"3%",
                 }}
               />
             </View>
+            {/* category dropdown menu */}
             <View style={{marginRight:1}}>
               <DropDownPicker
                items={catList}
@@ -159,25 +187,25 @@ const screenWidth = Dimensions.get("window").width;
                placeholder="C"
                showArrowIcon={false}
                placeholderStyle={{
-                 color: "#FFBEBE",
+                 color: "white",
                  fontWeight: "bold",
                }}
                style={{
                  width: 30,
                  borderWidth:0,
-                 backgroundColor:'black',
-                 marginRight:10,
-                 marginTop:20,
+                 backgroundColor:'#206B6B',
+                 marginRight:"2%",
                }}
                dropDownContainerStyle={{
                  width: screenWidth * 0.38,
-                 backgroundColor:'black',
+                 backgroundColor:'#206B6B',
                  borderWidth:0,
-                 marginTop:20,
+                 marginVertical:"3%",
                }}
              />
             </View>
            </View>
+           {/* Text input for the user to type or edit the task name */}
            <KeyboardAvoidingView
                style ={styles.addTask, {flex:3}}
            >
@@ -190,8 +218,9 @@ const screenWidth = Dimensions.get("window").width;
            </KeyboardAvoidingView>
           </View>
          <View style={styles.headCont}>
-           <Text style={styles.title}>Date</Text>
+           <Text style={styles.title}> Set Date: </Text>
          </View>
+         {/* Calendar picker for the user to choose the task's date */}
          <View style ={styles.DatePick}>
            <CalendarPicker
              startFromMonday={true}
@@ -223,7 +252,7 @@ const screenWidth = Dimensions.get("window").width;
                color: '#000000',
              }}
              width={screenWidth * 0.9}
-             height={screenHeight*0.48}
+             height={screenHeight*0.5}
              initialDate={selectedDate}
              onDateChange={onDateChange}
              customDatesStyles={customStyle}
@@ -233,6 +262,7 @@ const screenWidth = Dimensions.get("window").width;
            <View style={styles.headCont}>
              <Text style={styles.title}>Set time:</Text>
            </View>
+           {/* Time picker for the user to choose the task's time and the touchable components to open the time picker on press */}
            <View style={styles.timeDisplay}>
              <TouchableOpacity style={styles.timeBox} onPress={()=>{setTimePicker(true)}}>
               <Text style={styles.timeText}>{time.toString().slice(16, 18)}</Text>
@@ -256,20 +286,24 @@ const screenWidth = Dimensions.get("window").width;
             <View style={styles.headCont}>
               <Text style={styles.title}>Set Reminder:</Text>
             </View>
+            {/* CheckReminder component for the user to choose the reminder date for the task to be added/edited */}
             <View style={{height:screenHeight*0.065, alignItems:'center'}}>
               <CheckReminder pressed={pressed} setPressed={setPressed}/>
             </View>
            </View>
+           {/* clear button to reset the whole page */}
            <View style ={styles.buttonSet}>
             <TouchableOpacity style ={styles.button} onPress={()=>{clear()}}>
               <Text style={styles.buttonText}>Clear</Text>
             </TouchableOpacity>
+            {/* cancel button to navigate back to the previous screen without adding or editing the task */}
             <TouchableOpacity style ={[styles.button, {marginLeft:'30%'}]} onPress={() =>
               navigation.navigate(navScreen, { title: route.params.title, category: category,
                  mode: mode, index: index, contMode:route.params.mode,
                  task:{name:"", date:"", time: "", color:"", rem_date:""}})}>
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
+            {/* ok button to navigate back to the previous screen with the task to be added/edited by passing all the data with the parameters */}
             <TouchableOpacity style ={styles.button} onPress={() =>
               navigation.navigate(navScreen, { title: route.params.title, category: category,
                  mode: mode, index: index, contMode:route.params.mode,
@@ -304,6 +338,10 @@ const screenWidth = Dimensions.get("window").width;
      flex: 1,
      height: '100%',
    },
+   searchCont:{
+     flexDirection:'row',
+     paddingHorizontal:10,
+   },
    addTask: {
      paddingHorizontal:10,
      justifyContent: 'space-around',
@@ -315,25 +353,26 @@ const screenWidth = Dimensions.get("window").width;
      borderRadius: 60,
      borderColor: '#C0C0C0',
      borderWidth: 1,
-     marginTop:20,
+     marginVertical:"3%",
    },
   DatePick:{
     backgroundColor:'#ebf4bd',
     marginHorizontal:10,
     borderRadius: 20,
     padding:10,
-    height: screenHeight*0.38,
+    height: screenHeight*0.37,
+    marginVertical:3,
   },
   timeDisplay:{
     flexDirection:'row',
     alignItems:'center',
     justifyContent: 'center',
-    height:screenHeight*0.07,
+    height:screenHeight*0.06,
   },
   timeBox:{
     borderWidth:3,
     paddingHorizontal: 5,
-    margin:5,
+    marginHorizontal:5,
   },
   timeText:{
     fontSize:25,
