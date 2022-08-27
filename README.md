@@ -1,4 +1,5 @@
-# CM3070 Computer Science Final Project - FunTrack Mobile application
+# CM3070 Computer Science Final Project
+# FunTrack Mobile application
 ## Name: May Hassan Ismail Abouelkhir
 
 ### Contents of the Project:
