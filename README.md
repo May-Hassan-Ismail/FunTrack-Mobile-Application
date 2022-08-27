@@ -28,3 +28,5 @@
 > - tests Folder: it contains all the test files and snapshots.
 
 > - App.js file: it's the main entry of the application which uses the react-native stack navigator and navigation container to navigate between all the application's screens.
+
+### Expo Project Link: `https://snack.expo.dev/@may_hassan/funtrack?platform=android`
