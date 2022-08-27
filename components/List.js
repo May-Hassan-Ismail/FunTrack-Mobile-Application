@@ -47,10 +47,6 @@ const List = (props) =>{
 }
 
 const styles = StyleSheet.create({
-  safeView:{
-    flex: 1,
-    height: '100%',
-  },
   taskItem: {
     padding: 15,
     borderRadius: 10,

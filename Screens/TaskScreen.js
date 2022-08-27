@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView, Image,
-         ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
-import { MaterialCommunityIcons, AntDesign, FontAwesome5 } from '@expo/vector-icons';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, ScrollView } from 'react-native';
+import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import Task from '../components/Task';
 import Footer from '../components/Footer';
 import CheckDay from '../components/CheckDay';
@@ -247,7 +246,7 @@ const styles = StyleSheet.create({
   },
   addTask: {
     position:'absolute',
-    bottom:70,
+    bottom:60,
     width:'100%',
     flexDirection:'row',
     alignItems:'center',

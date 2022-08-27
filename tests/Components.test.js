@@ -8,7 +8,6 @@ import List from '../components/List';
 
 jest.useFakeTimers();
 
-
 describe("<CheckDay />", () =>{
   it('should match snapshot', () =>{
     const snap = render(<CheckDay />).toJSON();
@@ -23,9 +22,14 @@ describe("<CheckReminder />", () =>{
   })
 });
 
-/*
-describe("<Task />", () =>{
+describe("<Footer />", () =>{
+  it('should match snapshot', () =>{
+    const snap = render(<Footer nav={{navigate: null}}/>).toJSON();
+    expect(snap).toMatchSnapshot();
+  })
+});
 
+describe("<Task />", () =>{
   it('should match snapshot', () =>{
     const item = {
       category_id: null,
@@ -44,17 +48,15 @@ describe("<Task />", () =>{
   })
 });
 
-describe("<Footer />", () =>{
-  it('should match snapshot', () =>{
-    const snap = render(<Footer nav={null}/>).toJSON();
-    expect(snap).toMatchSnapshot();
-  })
-});
-
 describe("<List />", () =>{
   it('should match snapshot', () =>{
-    const snap = render(<List />).toJSON();
+    const item = {
+      id: 1,
+      title: "test",
+      color:'red',
+      icon: ""
+    }
+    const snap = render(<List list={item} delFun={null} editFun={null} index={0} />).toJSON();
     expect(snap).toMatchSnapshot();
   })
 });
-*/

@@ -1,10 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView, Image,
-         ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import regression from 'regression';
 import AppLoading from 'expo-app-loading';
-import {extractUncompletedTasks, calcUserPerformance, editTask, loggedIn} from '../components/database';
+import {calcUserPerformance, editTask, loggedIn} from '../components/database';
 import {openDatabase} from '../components/OpenDatabase';
 import Task from '../components/Task';
 import Footer from '../components/Footer';

@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView, Image, Dimensions,
          KeyboardAvoidingView, Platform } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
-import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Footer from '../components/Footer';
@@ -304,11 +303,14 @@ const screenWidth = Dimensions.get("window").width;
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
             {/* ok button to navigate back to the previous screen with the task to be added/edited by passing all the data with the parameters */}
-            <TouchableOpacity style ={styles.button} onPress={() =>
+            <TouchableOpacity style ={styles.button} onPress={() =>{
+              if(task == ""){
+                alert("Task must have a title");
+              }else{
               navigation.navigate(navScreen, { title: route.params.title, category: category,
                  mode: mode, index: index, contMode:route.params.mode,
                  task:{name:task, date:new Date(selectedDate).toISOString(), time: time.toString(), color:value,
-                   rem_date: new Date(new Date(selectedDate).valueOf() - 86400000 * pressed).toString().slice(0,15) } })}>
+                   rem_date: new Date(new Date(selectedDate).valueOf() - 86400000 * pressed).toString().slice(0,15) } })}}}>
               <Text style={styles.buttonText}>Ok</Text>
             </TouchableOpacity>
            </View>

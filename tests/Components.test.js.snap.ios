@@ -3,24 +3,22 @@
 exports[`<CheckDay /> should match snapshot 1`] = `
 <View
   style={
-    Array [
-      Object {
-        "backgroundColor": "#FF9999",
-        "borderRadius": 10,
-        "justifyContent": "center",
-        "margin": 5,
-        "padding": 10,
-      },
-    ]
+    Object {
+      "backgroundColor": "#FFBEBE",
+      "borderRadius": 10,
+      "justifyContent": "center",
+      "margin": 5,
+      "padding": 10,
+    }
   }
 >
   <View>
     <Text
       style={
         Object {
-          "color": "white",
+          "color": "black",
           "fontFamily": "Skranji_700Bold",
-          "fontSize": 25,
+          "fontSize": 20,
         }
       }
     >
@@ -57,9 +55,9 @@ exports[`<CheckDay /> should match snapshot 1`] = `
       <Text
         style={
           Object {
-            "color": "white",
+            "color": "black",
             "fontFamily": "Skranji_700Bold",
-            "fontSize": 25,
+            "fontSize": 20,
           }
         }
       >
@@ -86,9 +84,9 @@ exports[`<CheckDay /> should match snapshot 1`] = `
       <Text
         style={
           Object {
-            "color": "white",
+            "color": "black",
             "fontFamily": "Skranji_700Bold",
-            "fontSize": 25,
+            "fontSize": 20,
           }
         }
       >
@@ -115,9 +113,9 @@ exports[`<CheckDay /> should match snapshot 1`] = `
       <Text
         style={
           Object {
-            "color": "white",
+            "color": "black",
             "fontFamily": "Skranji_700Bold",
-            "fontSize": 25,
+            "fontSize": 20,
           }
         }
       >
@@ -144,9 +142,9 @@ exports[`<CheckDay /> should match snapshot 1`] = `
       <Text
         style={
           Object {
-            "color": "white",
+            "color": "black",
             "fontFamily": "Skranji_700Bold",
-            "fontSize": 25,
+            "fontSize": 20,
           }
         }
       >
@@ -173,9 +171,9 @@ exports[`<CheckDay /> should match snapshot 1`] = `
       <Text
         style={
           Object {
-            "color": "white",
+            "color": "black",
             "fontFamily": "Skranji_700Bold",
-            "fontSize": 25,
+            "fontSize": 20,
           }
         }
       >
@@ -187,13 +185,13 @@ exports[`<CheckDay /> should match snapshot 1`] = `
     <Text
       style={
         Object {
-          "color": "white",
+          "color": "black",
           "fontWeight": "bold",
           "marginHorizontal": "34%",
         }
       }
     >
-       5 is too good! 
+       5 is Excellent! 
     </Text>
   </View>
 </View>
@@ -424,6 +422,119 @@ exports[`<CheckReminder /> should match snapshot 1`] = `
     >
        early 
     </Text>
+  </View>
+</View>
+`;
+
+exports[`<Footer /> should match snapshot 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#206B6B",
+      "bottom": 0,
+      "flexDirection": "row",
+      "height": 97.38199999999999,
+      "justifyContent": "space-around",
+      "position": "absolute",
+      "width": "100%",
+    }
+  }
+>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <Text />
+  </View>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <Text />
+  </View>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <Text />
+  </View>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <Text />
+  </View>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <Text />
   </View>
 </View>
 `;

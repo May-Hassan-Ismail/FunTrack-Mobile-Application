@@ -7,7 +7,7 @@ exports[`<CheckDay /> should match snapshot 1`] = `
     Object {
       "WebkitBoxPack": "center",
       "WebkitJustifyContent": "center",
-      "backgroundColor": "rgba(255,153,153,1.00)",
+      "backgroundColor": "rgba(255,190,190,1.00)",
       "borderBottomLeftRadius": "10px",
       "borderBottomRightRadius": "10px",
       "borderTopLeftRadius": "10px",
@@ -33,9 +33,9 @@ exports[`<CheckDay /> should match snapshot 1`] = `
       dir="auto"
       style={
         Object {
-          "color": "rgba(255,255,255,1.00)",
+          "color": "rgba(0,0,0,1.00)",
           "fontFamily": "Skranji_700Bold",
-          "fontSize": "25px",
+          "fontSize": "20px",
         }
       }
     >
@@ -91,9 +91,9 @@ exports[`<CheckDay /> should match snapshot 1`] = `
         dir="auto"
         style={
           Object {
-            "color": "rgba(255,255,255,1.00)",
+            "color": "rgba(0,0,0,1.00)",
             "fontFamily": "Skranji_700Bold",
-            "fontSize": "25px",
+            "fontSize": "20px",
           }
         }
       >
@@ -128,9 +128,9 @@ exports[`<CheckDay /> should match snapshot 1`] = `
         dir="auto"
         style={
           Object {
-            "color": "rgba(255,255,255,1.00)",
+            "color": "rgba(0,0,0,1.00)",
             "fontFamily": "Skranji_700Bold",
-            "fontSize": "25px",
+            "fontSize": "20px",
           }
         }
       >
@@ -165,9 +165,9 @@ exports[`<CheckDay /> should match snapshot 1`] = `
         dir="auto"
         style={
           Object {
-            "color": "rgba(255,255,255,1.00)",
+            "color": "rgba(0,0,0,1.00)",
             "fontFamily": "Skranji_700Bold",
-            "fontSize": "25px",
+            "fontSize": "20px",
           }
         }
       >
@@ -202,9 +202,9 @@ exports[`<CheckDay /> should match snapshot 1`] = `
         dir="auto"
         style={
           Object {
-            "color": "rgba(255,255,255,1.00)",
+            "color": "rgba(0,0,0,1.00)",
             "fontFamily": "Skranji_700Bold",
-            "fontSize": "25px",
+            "fontSize": "20px",
           }
         }
       >
@@ -239,9 +239,9 @@ exports[`<CheckDay /> should match snapshot 1`] = `
         dir="auto"
         style={
           Object {
-            "color": "rgba(255,255,255,1.00)",
+            "color": "rgba(0,0,0,1.00)",
             "fontFamily": "Skranji_700Bold",
-            "fontSize": "25px",
+            "fontSize": "20px",
           }
         }
       >
@@ -257,14 +257,14 @@ exports[`<CheckDay /> should match snapshot 1`] = `
       dir="auto"
       style={
         Object {
-          "color": "rgba(255,255,255,1.00)",
+          "color": "rgba(0,0,0,1.00)",
           "fontWeight": "bold",
           "marginLeft": "34%",
           "marginRight": "34%",
         }
       }
     >
-       5 is too good! 
+       5 is Excellent! 
     </div>
   </div>
 </div>
@@ -601,6 +601,175 @@ exports[`<CheckReminder /> should match snapshot 1`] = `
     >
        early 
     </div>
+  </div>
+</div>
+`;
+
+exports[`<Footer /> should match snapshot 1`] = `
+<div
+  className="css-view-1dbjc4n"
+  style={
+    Object {
+      "WebkitAlignItems": "center",
+      "WebkitBoxAlign": "center",
+      "WebkitBoxDirection": "normal",
+      "WebkitBoxOrient": "horizontal",
+      "WebkitBoxPack": "justify",
+      "WebkitFlexDirection": "row",
+      "WebkitJustifyContent": "space-around",
+      "alignItems": "center",
+      "backgroundColor": "rgba(32,107,107,1.00)",
+      "bottom": "0px",
+      "flexDirection": "row",
+      "height": "0px",
+      "justifyContent": "space-around",
+      "msFlexAlign": "center",
+      "msFlexDirection": "row",
+      "msFlexPack": "distribute",
+      "position": "absolute",
+      "width": "100%",
+    }
+  }
+>
+  <div
+    className="css-view-1dbjc4n"
+    onClick={[Function]}
+    onContextMenu={[Function]}
+    onKeyDown={[Function]}
+    style={
+      Object {
+        "MozTransitionProperty": "opacity",
+        "MozUserSelect": "none",
+        "WebkitTransitionDuration": "0s",
+        "WebkitTransitionProperty": "opacity",
+        "WebkitUserSelect": "none",
+        "cursor": "pointer",
+        "msTouchAction": "manipulation",
+        "msUserSelect": "none",
+        "touchAction": "manipulation",
+        "transitionDuration": "0s",
+        "transitionProperty": "opacity",
+        "userSelect": "none",
+      }
+    }
+    tabIndex="0"
+  >
+    <div
+      className="css-text-901oao"
+      dir="auto"
+    />
+  </div>
+  <div
+    className="css-view-1dbjc4n"
+    onClick={[Function]}
+    onContextMenu={[Function]}
+    onKeyDown={[Function]}
+    style={
+      Object {
+        "MozTransitionProperty": "opacity",
+        "MozUserSelect": "none",
+        "WebkitTransitionDuration": "0s",
+        "WebkitTransitionProperty": "opacity",
+        "WebkitUserSelect": "none",
+        "cursor": "pointer",
+        "msTouchAction": "manipulation",
+        "msUserSelect": "none",
+        "touchAction": "manipulation",
+        "transitionDuration": "0s",
+        "transitionProperty": "opacity",
+        "userSelect": "none",
+      }
+    }
+    tabIndex="0"
+  >
+    <div
+      className="css-text-901oao"
+      dir="auto"
+    />
+  </div>
+  <div
+    className="css-view-1dbjc4n"
+    onClick={[Function]}
+    onContextMenu={[Function]}
+    onKeyDown={[Function]}
+    style={
+      Object {
+        "MozTransitionProperty": "opacity",
+        "MozUserSelect": "none",
+        "WebkitTransitionDuration": "0s",
+        "WebkitTransitionProperty": "opacity",
+        "WebkitUserSelect": "none",
+        "cursor": "pointer",
+        "msTouchAction": "manipulation",
+        "msUserSelect": "none",
+        "touchAction": "manipulation",
+        "transitionDuration": "0s",
+        "transitionProperty": "opacity",
+        "userSelect": "none",
+      }
+    }
+    tabIndex="0"
+  >
+    <div
+      className="css-text-901oao"
+      dir="auto"
+    />
+  </div>
+  <div
+    className="css-view-1dbjc4n"
+    onClick={[Function]}
+    onContextMenu={[Function]}
+    onKeyDown={[Function]}
+    style={
+      Object {
+        "MozTransitionProperty": "opacity",
+        "MozUserSelect": "none",
+        "WebkitTransitionDuration": "0s",
+        "WebkitTransitionProperty": "opacity",
+        "WebkitUserSelect": "none",
+        "cursor": "pointer",
+        "msTouchAction": "manipulation",
+        "msUserSelect": "none",
+        "touchAction": "manipulation",
+        "transitionDuration": "0s",
+        "transitionProperty": "opacity",
+        "userSelect": "none",
+      }
+    }
+    tabIndex="0"
+  >
+    <div
+      className="css-text-901oao"
+      dir="auto"
+    />
+  </div>
+  <div
+    className="css-view-1dbjc4n"
+    onClick={[Function]}
+    onContextMenu={[Function]}
+    onKeyDown={[Function]}
+    style={
+      Object {
+        "MozTransitionProperty": "opacity",
+        "MozUserSelect": "none",
+        "WebkitTransitionDuration": "0s",
+        "WebkitTransitionProperty": "opacity",
+        "WebkitUserSelect": "none",
+        "cursor": "pointer",
+        "msTouchAction": "manipulation",
+        "msUserSelect": "none",
+        "touchAction": "manipulation",
+        "transitionDuration": "0s",
+        "transitionProperty": "opacity",
+        "userSelect": "none",
+      }
+    }
+    tabIndex="0"
+  >
+    <div
+      className="css-text-901oao"
+      dir="auto"
+    />
   </div>
 </div>
 `;

@@ -1,14 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, SafeAreaView, Dimensions,
-         KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, ScrollView } from 'react-native';
-import { MaterialCommunityIcons, AntDesign, FontAwesome5 } from '@expo/vector-icons';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Dimensions, ScrollView } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
-import List from '../components/List';
 import Footer from '../components/Footer';
 import {calcUserPerformance, loggedIn, extractLoggedInUser} from '../components/database';
-import Task from '../components/Task';
 import { LineChart, PieChart, ProgressChart } from "react-native-chart-kit";
 import {openDatabase} from '../components/OpenDatabase';
 
@@ -234,6 +230,7 @@ export function PerformanceScreen({ route, navigation }) {
         </ScrollView>
         {/* Adding the footer component with passing the navigation object as a prop */}
         <Footer nav={navigation}/>
+        <StatusBar barStyle="light-content" backgroundColor= '#f4f6fc' />
       </SafeAreaView>
       </View>
     )

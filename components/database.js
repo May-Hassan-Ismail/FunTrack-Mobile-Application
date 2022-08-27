@@ -18,7 +18,7 @@ export const extractLoggedInUser = (db) =>{
       );
   });
 }
-extractLoggedInUser(datab);
+//extractLoggedInUser(datab);
 
 // function for creating all the tables in the database schema if they are not already created before.
 export const createTables = (db)=>{

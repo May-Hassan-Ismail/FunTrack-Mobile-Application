@@ -1,12 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect, useRef} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, SafeAreaView, Button,
-         KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, ScrollView, Platform } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
 import { useFonts, Skranji_700Bold } from '@expo-google-fonts/skranji';
-import { MaterialCommunityIcons, AntDesign, FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
-import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Footer from '../components/Footer';
 import {openDatabase} from '../components/OpenDatabase';
@@ -272,7 +270,7 @@ export function HomeScreen({ route, navigation }) {
           iconContainer={{flex: 0.1}}
           onDateSelected={onDateSelected}
         />
-        <ScrollView style={{maxHeight:'73%', marginTop:'2%'}}>
+        <ScrollView style={{maxHeight:'70%', marginTop:'2%'}}>
         {/* The container of the uncompleted tasks */}
         {/* if the uncompleted task is for today and its time is before the current time, it's an overdue not uncompleted task */}
           <View style={styles.taskCont}>
@@ -356,7 +354,7 @@ const styles = StyleSheet.create({
   },
   addTask: {
     position:'absolute',
-    bottom:70,
+    bottom:60,
     width:'100%',
     flexDirection:'row',
     alignItems:'center',

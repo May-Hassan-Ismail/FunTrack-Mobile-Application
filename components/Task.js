@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import CheckBox from 'expo-checkbox';
 import { MaterialCommunityIcons, AntDesign, FontAwesome } from '@expo/vector-icons';
 
@@ -67,10 +67,6 @@ const Task = (props) =>{
 }
 
 const styles = StyleSheet.create({
-  safeView:{
-    flex: 1,
-    height: '100%',
-  },
   taskItem: {
     padding: 6,
     margin: 3,

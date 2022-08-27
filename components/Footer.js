@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { MaterialCommunityIcons, AntDesign, Ionicons, FontAwesome5 } from '@expo/vector-icons';
 
 const screenHeight = Dimensions.get("window").height;
@@ -59,10 +59,6 @@ const Footer = (props) =>{
 }
 
 const styles = StyleSheet.create({
-  safeView:{
-    flex: 1,
-    height: '100%',
-  },
   footerCont:{
     position:'absolute',
     bottom:0,
