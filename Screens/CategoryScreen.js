@@ -83,7 +83,7 @@ export function CategoryScreen({ navigation }) {
     }
     setList(null);
   }
-  // delete the category from the categories table by its id.
+  // deletes the category from the categories table by its id, so it takes the category id as an input.
   const deleteList = (id) =>{
     db.transaction(async (tx)=>{
       await tx.executeSql(
@@ -93,14 +93,18 @@ export function CategoryScreen({ navigation }) {
     // fetching the data from the database after deleting the category to show the updated date.
     refData();
   }
-  // function for setting the index of the category/list to be edited and adding the category name to the input field
-  // and setting the color value to the color value of the category to be edited.
+  /*
+    * function for setting the index of the category/list to be edited
+    * it adds the category name to the input field to be edited.
+    * it sets the color value to the color value of the category to be edited.
+    * params: it takes the list (category) to be edited as an input.
+  */
   const editVals = (list) =>{
     setEditInd(list);
     setList(list.title);
     setValue(list.color);
   }
-  // extracts the category to be updated from the database by its id.
+  // extracts the category to be updated from the database by its id, so it takes the category id as an input.
   const editList = (id) =>{
     db.transaction(async (tx)=>{
       await tx.executeSql(
@@ -113,7 +117,10 @@ export function CategoryScreen({ navigation }) {
     setButtonMode("edit");
     refData();
   }
-  // edits the category by updating its properties to the values changed by the user.
+  /*
+    * edits the category by updating its properties to the values changed by the user.
+    * params: it takes the category item to be updated as an input.
+  */
   const addEdited = (item)=>{
     Keyboard.dismiss();
     if(list != null && list != ""){
@@ -221,9 +228,11 @@ export function CategoryScreen({ navigation }) {
               placeholderStyle={{
                 color: "#fff",
                 fontWeight: "bold",
+                fontSize:20,
+                paddingLeft: 3,
               }}
               style={{
-                width: 30,
+                width: 40,
                 borderWidth:0,
                 backgroundColor:'#206B6B',
               }}
@@ -231,6 +240,7 @@ export function CategoryScreen({ navigation }) {
                 width: 40,
                 borderWidth:0,
                 borderRadius:10,
+                backgroundColor:"black",
               }}
             />
           </View>

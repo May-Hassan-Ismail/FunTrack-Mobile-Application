@@ -29,4 +29,9 @@
 
 > - App.js file: it's the main entry of the application which uses the react-native stack navigator and navigation container to navigate between all the application's screens.
 
-### Expo Project Link: `https://snack.expo.dev/@may_hassan/funtrack?platform=android`
+### Running application:
+> - Install dependencies: `npm install` or `yarn install`
+> - Navigate to the project's folder
+> - run the script: `expo start`
+
+### Expo Project Link: [expo-link](https://snack.expo.dev/@may_hassan/funtrack?platform=android)

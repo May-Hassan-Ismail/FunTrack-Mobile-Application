@@ -12,6 +12,8 @@ import {openDatabase} from '../components/OpenDatabase';
 const db = openDatabase('db.TodoDB');
 // use dimensions for extracting the screen width to make the application responsive.
 const screenWidth = Dimensions.get("window").width*0.95;
+// getting the time zone offset for handling the time zone according to user's location.
+const offset = new Date().getTimezoneOffset()
 
 // timer function for rendering the page after waiting for the data fetching and doing the calculations on the data.
 const wait = (timeout) => {
@@ -20,7 +22,7 @@ const wait = (timeout) => {
 
 export function PerformanceScreen({ route, navigation }) {
   // stores the start date of the 5 day line chart.
-  const [startDate, setStartDate] = useState(new Date(new Date().valueOf() - 86400000 * 4));
+  const [startDate, setStartDate] = useState(new Date(new Date(new Date().getTime() - (offset*60*1000)).valueOf() - 86400000 * 4));
   // stores the list of uncompleted tasks.
   const [unCompTaskList, setUnCompTaskList] = useState([]);
   // stores the list of dates of the 5 day line chart.
@@ -41,7 +43,11 @@ export function PerformanceScreen({ route, navigation }) {
     return () => { isMounted = false };
   }, [route]);
 
-  // function for moving right or left the line and the progress charts for showing the user's performance in different dates.
+  /*
+    * function for moving right or left through the line and the progress charts
+    * for showing the user's performance in different dates.
+    * params: it takes the movement direction as an input (its value is either left or right)
+  */
   const reRend = (direction) =>{
     if(direction == 'left')
       setStartDate(new Date(startDate.valueOf() - 86400000 * 5));
@@ -57,7 +63,7 @@ export function PerformanceScreen({ route, navigation }) {
     extractLoggedInUser(db);
     db.transaction(tx => {
       tx.executeSql("SELECT COUNT(*) as c FROM tasks WHERE date<? AND state='uncompleted' AND user_id = ?",
-        [new Date().toISOString().slice(0,10), loggedIn[0].id],
+        [new Date(new Date().getTime() - (offset*60*1000)).toISOString().slice(0,10), loggedIn[0].id],
         // assigns the ResultSet Object to the overDueCount state.
         (txObj, { rows: { _array } }) => setOverDueCount(_array[0].c),
         // failure callback which sends two things Transaction object and Error
@@ -71,7 +77,7 @@ export function PerformanceScreen({ route, navigation }) {
     extractOverdueCount();
     // calls the calcUserPerformance function for extracting the list of today's tasks and doing all the calculations.
     // the piechart flag is passed as true for calculating the counts of the tasks in the different categories.
-    let listObj = calcUserPerformance(new Date(), [], [],[], true, db);
+    let listObj = calcUserPerformance(new Date(new Date().getTime() - (offset*60*1000)), [], [],[], true, db);
     // assigning the returned categories List that contains the count of tasks of different categories to the catList variable.
     setCatList(listObj.catList);
 

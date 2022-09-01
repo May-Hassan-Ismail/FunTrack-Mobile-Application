@@ -10,6 +10,8 @@ import Footer from '../components/Footer';
 
 // opens the TodoDB database.
 const db = openDatabase('db.TodoDB');
+// getting the time zone offset for handling the time zone according to user's location.
+const offset = new Date().getTimezoneOffset()
 
 // timer function for rendering the page after waiting for the data fetching and anaysing the returned data.
 const wait = (timeout) => {
@@ -79,7 +81,8 @@ export function SuggestionsScreen({ route, navigation }) {
 
     // extracts the list of today's uncompleted tasks
     db.transaction(tx => {
-      tx.executeSql("SELECT * FROM tasks WHERE date LIKE '%"+new Date().toISOString().slice(0,10)+"%' AND state='uncompleted' AND user_id=?",
+      tx.executeSql("SELECT * FROM tasks WHERE date LIKE '%"+new Date(new Date().getTime() - (offset*60*1000)).toISOString().slice(0,10)
+      +"%' AND state='uncompleted' AND user_id=?",
         [loggedIn[0].id],
         // assigns the ResultSet object to the unCompTaskList variable.
         (txObj, { rows: { _array } }) => setUnCompTaskList(_array),
@@ -94,25 +97,35 @@ export function SuggestionsScreen({ route, navigation }) {
     */
     db.transaction(tx => {
       tx.executeSql("SELECT category_id FROM tasks WHERE date<? AND state='uncompleted' AND user_id=? GROUP BY category_id ORDER BY COUNT(*) DESC",
-        [new Date().toISOString().slice(0,10), loggedIn[0].id],
+        [new Date(new Date().getTime() - (offset*60*1000)).toISOString().slice(0,10), loggedIn[0].id],
         (txObj, { rows: { _array } }) => {
           if(_array.length > 0){
             // loops through the returned list of category_ids and loops maximum at 2 of the categories.
             // then it extracts the list of overdue tasks whose category_id is that category id and it's not null.
-            for(let i=0;i<Math.min(_array.length, 2);i++){
+            let count = Math.min(_array.length, 2);
+            // flag for detecting if the pomodoro list is created or not.
+            let pomodoroFill = 0;
+            for(let i=0;i<count;i++){
               if(_array[i].category_id != null){
                 tx.executeSql("SELECT * FROM tasks WHERE date<? AND state='uncompleted' AND user_id=? AND category_id =?",
-                  [new Date().toISOString().slice(0,10), loggedIn[0].id, _array[i].category_id],
+                  [new Date(new Date().getTime() - (offset*60*1000)).toISOString().slice(0,10), loggedIn[0].id, _array[i].category_id],
                   (txObj, { rows: { _array } }) =>{
                     // assigns the tasks list of the category that has the highest number of overdue tasks to the pomodoro list.
-                    if(i==0){
+                    if(!pomodoroFill){
                       setPomodoroList(_array);
+                      pomodoroFill = 1;
                     }else{
                       // assigns the tasks list of the category that has the second highest number of overdue tasks to the overdue list.
                       setOverDueList(_array);
                     }
                   },
                   (txObj, error) => console.log('Error ', error));
+              }else{
+                /* increments the loop cycles by 1 if there are still elements in the array and if the category_id is null,
+                   to get the overdue lists of tasks that belongs to the highest 2 categories of overdue tasks.
+                */
+                count++;
+                count = Math.min(_array.length, count);
               }
             }
           }
@@ -123,7 +136,7 @@ export function SuggestionsScreen({ route, navigation }) {
     });
   }
 
-  // deleting the task from the tasks table by its id.
+  // deleting the task from the tasks table by its id, so it takes the task's id as an input.
   const deleteTask = (id) =>{
     db.transaction(async (tx)=>{
       await tx.executeSql(
@@ -133,7 +146,7 @@ export function SuggestionsScreen({ route, navigation }) {
     // reloading the page after deleting the task to show the updated screen.
     setLoading(true);
   }
-  // marks the task as completed by updating its state to the value completed.
+  // marks the task as completed by updating its state to the value completed, so it takes the task's id as an input.
   const completeTask = (id) =>{
     db.transaction(async (tx)=>{
       await tx.executeSql(
@@ -189,7 +202,7 @@ export function SuggestionsScreen({ route, navigation }) {
               <View style={styles.taskCont}>
                 <Text style={styles.taskTitle}> Finish those and elevate your mood 📈</Text>
                 {
-                  data.length > 0 &&
+                  data.length > 1 &&
                   <Text style={styles.taskTitle}> from {Math.round(model.predict(0)[1])} to {Math.round(model.predict(1)[1])}</Text>
                 }
                 {
@@ -204,17 +217,17 @@ export function SuggestionsScreen({ route, navigation }) {
           }
           {/* Shows the today's predicted mood level even if there are no uncompleted tasks for today */}
           {
-            unCompTaskList.length ==0 && data.length > 0 &&
+            unCompTaskList.length ==0 && data.length > 1 &&
               <View style={styles.taskCont}>
                 <Text style={styles.taskTitle}> Today's expected mood is {Math.round(model.predict(1)[1])}</Text>
               </View>
           }
           {/* Letting user to know that there's no enough data to predict the mood level as there's no training data for the regression model */}
           {
-            unCompTaskList.length ==0 && data.length == 0 &&
+            unCompTaskList.length ==0 && data.length <= 1 &&
               <View style={styles.taskCont}>
-                <Text style={styles.taskTitle}> No enough data to expect the today's mood</Text>
-                <Text> Please, help us help you by letting us know your everyday mood level</Text>
+                <Text style={styles.taskTitle}>No enough data to expect the today's mood</Text>
+                <Text>Please, help us help you by letting us know your everyday mood level</Text>
               </View>
           }
           {/*
@@ -254,7 +267,7 @@ export function SuggestionsScreen({ route, navigation }) {
           {
             pomodoroList.length == 0 && overDueList.length == 0 && unCompTaskList.length == 0 &&
             <View style={styles.taskCont}>
-              <Text> You are doing great 🎊 , Keep up the hard work! 💪</Text>
+              <Text> You are doing great 🎊. Keep up the hard work! 💪</Text>
             </View>
           }
         </ScrollView>

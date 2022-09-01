@@ -18,7 +18,6 @@ export const extractLoggedInUser = (db) =>{
       );
   });
 }
-//extractLoggedInUser(datab);
 
 // function for creating all the tables in the database schema if they are not already created before.
 export const createTables = (db)=>{
@@ -70,7 +69,14 @@ const createDefaultCategories = (db) =>{
   });
 }
 
-// function for creating a new user which is called after the click on the signup button.
+/*
+  * function for creating a new user which is called after the click on the signup button.
+  * params:
+    1) username of the account to be created.
+    2) Password of the account to be created.
+    3) navigarion object.
+    4) open datababse.
+*/
 export const createUser = (username, password, navigation, db) =>{
   if(username != "" && password !=""){
     // inserting a new row in the users table with the entered username and password.
@@ -95,7 +101,14 @@ export const createUser = (username, password, navigation, db) =>{
   }
 }
 
-// authenticating the user by matching the password stored in the database to the entered one.
+/*
+  * authenticating the user by matching the password stored in the database to the entered one.
+  * params:
+    1) username of the account to be authenticated.
+    2) Password of the account to be authenticated.
+    3) navigarion object.
+    4) open datababse.
+*/
 export const authenticateUser = (username, password, navigation, db)  =>{
   db.transaction(async (tx)=>{
     await tx.executeSql(
@@ -118,7 +131,13 @@ export const authenticateUser = (username, password, navigation, db)  =>{
   });
 }
 
-// function returns the list of uncompleted tasks of a specific date and which belongs to the logged in user.
+/*
+  * function returns the list of uncompleted tasks of a specific date and which belongs to the logged in user.
+  * params:
+    1) date for filtering the uncompleted tasks with.
+    2) list array for saving the returned list of tasks.
+    3) open datababse.
+*/
 export const extractUncompletedTasks = (date, list, db)=>{
   db.transaction(tx => {
     // extracts the list of tasks of the entered date and which state is uncompleted and which belongs to the logged in user.
@@ -139,7 +158,12 @@ export const extractUncompletedTasks = (date, list, db)=>{
     the priorities in to consideration so the high priority task contributes by 4 points, middle -> 3, low -> 2 and no -> 1.
     and If there are no tasks the user's performance will considered to be 100%.
   * Counts of the uncompleted, completed and overdue tasks in the list to be used in the pie Chart.
-
+  * params:
+    1) pieChart boolean value for ordering calculating the pie chart data item or not.
+    2) list of tasks to calculate the user's performance in them.
+    3) pList array for saving the user's performance.
+    4) cList array for saving the sum value of the completed tasks of the entered array of tasks.
+    4) catList array for saving data item that will be used in creating the pie chart.
 */
 const calcPerformance = (pieChart, list, pList, cList, catList) =>{
   let sum = 0;
@@ -182,7 +206,17 @@ const calcPerformance = (pieChart, list, pList, cList, catList) =>{
   }
 }
 
-// function for extracting the tasks of a specific date and calls the calcPerformance function to do all the calculations on the returned list.
+/*
+  * function for extracting the tasks of a specific date.
+  * it calls the calcPerformance function to do all the calculations on the returned list.
+  * params:
+    1) date at which the user's performance on the tasks of that date will be calculated.
+    2) pList of savind the user's performance.
+    3) cList for saving the sum of the completed tasks.
+    4) catList for saving the Pie Chart data item.
+    5) pieChart boolean value for ordering calculating the pie chart data item or not.
+    6) open datababse.
+*/
 export const calcUserPerformance = (date, pList, cList, catList, pieChart, db)=>{
   extractLoggedInUser(db);
   db.transaction(tx => {
@@ -197,26 +231,44 @@ export const calcUserPerformance = (date, pList, cList, catList, pieChart, db)=>
   return {performL:pList, countList: cList, catList: catList};
 }
 
+/*
+  * function for adding a mood level of a specific date for a specific user.
+  * If there's a saved mood level of the date it will be updated with the newely selected mood level by the user.
+  * params:
+    1) user_id.
+    2) date where the mood level is reported.
+    3) mood level.
+    4) open datababse.
+*/
 export const addMoodStatus = (user_id, date, level, db) =>{
   db.transaction(async (tx)=>{
     await tx.executeSql(
       "SELECT * FROM mood WHERE user_id =? AND date =?", [user_id, date],
 
         (txObj, { rows: { _array } }) => {
+          // if there's no previously stored mood level of that date for that user the reported mood level will be inserted.
           if(_array.length == 0){
             tx.executeSql(
               "INSERT INTO mood (user_id, date, level) VALUES (?,?,?)", [user_id, date, level]);
           }
+          // if there's a previously saved mood level it will be updated to the newly selected mood level by the user.
           else{
             tx.executeSql("UPDATE mood SET level=? WHERE user_id =? AND date =?", [level, user_id, date]);
           };
         },
-
         (txObj, error) => console.log('Error ', error)
       );
   });
 }
-// function for adding a new task by inserting the task to the tasks table for the logged in user and with the selected properties.
+
+/*
+  * function for adding a new task by inserting the task to the tasks table for the logged in user and with the selected properties.
+  * params:
+    1) user_id of the task to be edited.
+    2) task to be edited.
+    3) category id of the task to be edited.
+    4) open datababse.
+*/
 export const addTask = async(user_id, task, category, db) =>{
   if( task.name != null && task.name != ""){
     let cat_id = null;
@@ -232,7 +284,14 @@ export const addTask = async(user_id, task, category, db) =>{
   }
 }
 
-// function for editing a task by updating the task in the tasks table for the logged in user with the edited properties.
+/*
+  * function for editing a task by updating the task in the tasks table for the logged in user with the edited properties.
+  * params:
+    1) task to be edited.
+    2) id of the task to be edited.
+    3) category id of the task to be edited.
+    4) open datababse.
+*/
 export const editTask = (task, id, category, db) =>{
   if( task.name != null && task.name != ""){
     let cat_id = null;

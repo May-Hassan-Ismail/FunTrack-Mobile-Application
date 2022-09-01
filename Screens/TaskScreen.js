@@ -10,6 +10,8 @@ import {openDatabase} from '../components/OpenDatabase';
 
 // opens the TodoDB database.
 const db = openDatabase('db.TodoDB');
+// getting the time zone offset for handling the time zone according to user's location.
+const offset = new Date().getTimezoneOffset()
 
 export function TaskScreen({ route, navigation }) {
   // holds the list of uncompleted tasks of a specific category.
@@ -19,6 +21,7 @@ export function TaskScreen({ route, navigation }) {
   // state for handling user selection of his/her mood state in the day.
   const [pressed, setPressed]= useState(0);
 
+  // extracts the list of uncompleted and completed tasks of a specific category or of today's date.
   const retrieveData= ()=>{
     extractLoggedInUser(db);
     // checks if the screen is for listing the tasks of a specific category.
@@ -46,22 +49,39 @@ export function TaskScreen({ route, navigation }) {
     else if(route.params.title == 'Today'){
       // selecting the list of tasks which state is uncompleted, date is today and which belongs to the logged in user.
       db.transaction(tx => {
-        tx.executeSql("SELECT * FROM tasks WHERE date LIKE '%"+ new Date().toISOString().slice(0,10)+"%' AND state='uncompleted' AND user_id=?",
+        tx.executeSql("SELECT * FROM tasks WHERE date LIKE '%"+ new Date(new Date().getTime() - (offset*60*1000)).toISOString().slice(0,10)
+        +"%' AND state='uncompleted' AND user_id=?",
           [loggedIn[0].id],
           // the result object is assigned to the taskItems list.
           (txObj, { rows: { _array } }) => setTaskItems(_array),
           // failure callback which sends two things Transaction object and Error
           (txObj, error) => console.log('Error ', error))
-      })
+      });
       // selecting the list of tasks which state is completed, date is today and which belongs to the logged in user.
       db.transaction(tx => {
-        tx.executeSql("SELECT * FROM tasks WHERE date LIKE '%"+ new Date().toISOString().slice(0,10)+"%' AND state='completed' AND user_id=?",
+        tx.executeSql("SELECT * FROM tasks WHERE date LIKE '%"+ new Date(new Date().getTime() - (offset*60*1000)).toISOString().slice(0,10)
+        +"%' AND state='completed' AND user_id=?",
           [loggedIn[0].id],
           // the result object is assigned to the completedTasks List.
           (txObj, { rows: { _array } }) => setCompletedTasks(_array),
           // failure callback which sends two things Transaction object and Error
           (txObj, error) => console.log('Error ', error))
-      })
+      });
+      // extracts the stored mood level from database.
+      db.transaction(async (tx)=>{
+        await tx.executeSql(
+          "SELECT * FROM mood WHERE user_id =? AND date =?",
+          [loggedIn[0].id, new Date(new Date().getTime() - (offset*60*1000)).toISOString().slice(0,10)],
+           // the result object is assigned to the pressed variable to be reflected on the screen.
+            (txObj, { rows: { _array } }) => {
+              // only if there's a mood level stored for today.
+              if(_array.length > 0){
+                setPressed(_array[0].level);
+              }
+            },
+            (txObj, error) => console.log('Error ', error)
+          );
+      });
     }
   }
 
@@ -86,7 +106,7 @@ export function TaskScreen({ route, navigation }) {
     return () => { isMounted = false };
   }, [route]);
 
-  // deleting the task from the tasks table by its id.
+  // deleting the task from the tasks table by its id, so it takes the task's id as an input.
   const deleteTask = (id) =>{
     db.transaction(async (tx)=>{
       await tx.executeSql(
@@ -97,7 +117,7 @@ export function TaskScreen({ route, navigation }) {
     retrieveData();
   }
 
-  // marks the task as completed by updating its state to be completed.
+  // marks the task as completed by updating its state to be completed, so it takes the task's id as an input.
   const completeTask = (id) =>{
     db.transaction(async (tx)=>{
       await tx.executeSql(
@@ -108,7 +128,7 @@ export function TaskScreen({ route, navigation }) {
     // extract the tasks lists after the task is marked as completed to show the user the updated screen.
     retrieveData();
   }
-  // marks the task as uncompleted by updating its state to be uncompleted.
+  // marks the task as uncompleted by updating its state to be uncompleted, so it takes the task's id as an input.
   const unCompleteTask = (id) =>{
     db.transaction(async (tx)=>{
       await tx.executeSql(
@@ -120,6 +140,7 @@ export function TaskScreen({ route, navigation }) {
     retrieveData();
   }
 
+  // creates the tasks' uncompleted container and completed container.
   const taskContainer = () =>{
     return(
       <ScrollView style={{maxHeight:'90%'}}>
@@ -141,6 +162,12 @@ export function TaskScreen({ route, navigation }) {
             })
           }
         </View>
+        {/* The CheckDay container appears only in the today's TasksList screen with all the required props passed */}
+        {route.params.title == "Today" &&
+          <CheckDay pressed={pressed} setPressed={setPressed} addMoodStatus={addMoodStatus}
+            date={new Date(new Date().getTime() - (offset*60*1000)).toISOString().slice(0,10)} user_id = {loggedIn[0].id} db={db}
+          />
+        }
         {/* The container of the completed tasks */}
         <View style={styles.compTaskCont}>
           <Text style={styles.taskTitle}> Completed</Text>
@@ -153,12 +180,6 @@ export function TaskScreen({ route, navigation }) {
             })
           }
         </View>
-        {/* The CheckDay container appears only in the today's TasksList screen with all the required props passed */}
-        {route.params.title == "Today" &&
-          <CheckDay pressed={pressed} setPressed={setPressed} addMoodStatus={addMoodStatus}
-            date={new Date().toISOString().slice(0,10)} user_id = {loggedIn[0].id} db={db}
-          />
-        }
       </ScrollView>
     );
   }

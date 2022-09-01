@@ -14,6 +14,8 @@ import Task from '../components/Task';
 
 // opens the TodoDB database.
 const db = openDatabase('db.TodoDB');
+// getting the time zone offset for handling the time zone according to user's location.
+const offset = new Date().getTimezoneOffset()
 
 // enavling notification alert and sound.
 Notifications.setNotificationHandler({
@@ -31,7 +33,7 @@ const wait = (timeout) => {
 
 export function HomeScreen({ route, navigation }) {
   // holds the date selected from the horizontal calendar.
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date(new Date().getTime() - (offset*60*1000)));
   // holds the list of all tasks that the user should be notified for.
   const [notificationList, setNotificationList] = useState([]);
   // holds the list of uncompleted tasks in the selected date.
@@ -56,6 +58,7 @@ export function HomeScreen({ route, navigation }) {
     setCompTaskList([]);
     setUnCompTaskList([]);
     setOverDueList([]);
+    setSelectedDate(new Date(new Date().getTime() - (offset*60*1000)));
     // start with the loading state being true until data is extracted from the database.
     setLoading(true);
     if(route.params != undefined){
@@ -79,6 +82,7 @@ export function HomeScreen({ route, navigation }) {
   }, [route]);
 
   const setup = () =>{
+    let isMounted = true;
     // extract the tasks of the different categories with the selected date.
     extractTasks(selectedDate);
     // extract the list of tasks of the loggen in user and which state is uncompleted and the reminder_date is today.
@@ -114,9 +118,11 @@ export function HomeScreen({ route, navigation }) {
       });
 
       // This listener is fired whenever a notification is received while the app is foregrounded
-      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-        setNotification(notification);
-      });
+      if (isMounted){
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+          setNotification(notification);
+        });
+      }
 
       // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
       responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
@@ -135,11 +141,17 @@ export function HomeScreen({ route, navigation }) {
       return () => {
         Notifications.removeNotificationSubscription(notificationListener.current);
         Notifications.removeNotificationSubscription(responseListener.current);
+        isMounted = false;
       };
     }
   }
 
+ /*
+    * function extracts the uncompleted, completed and overdue tasks for some specific date.
+    * params: data (which is the date that the tasks are filtered with)
+ */
   const extractTasks = (date)=>{
+
     db.transaction(tx => {
       // selecting the list of tasks of the entered date which state is uncompleted and which belongs to the logged in user.
       tx.executeSql("SELECT * FROM tasks WHERE date LIKE '%"+date.toISOString().slice(0,10)+"%' AND state='uncompleted' AND user_id=?",
@@ -164,7 +176,7 @@ export function HomeScreen({ route, navigation }) {
     db.transaction(tx => {
       // selecting the list of tasks which dates are less than the selected date (overDue) and which belongs to the loggedin user.
       tx.executeSql("SELECT * FROM tasks WHERE date<? AND state='uncompleted' AND user_id=?",
-        [new Date().toISOString().slice(0,10), loggedIn[0].id],
+        [new Date(new Date().getTime() - (offset*60*1000)).toISOString().slice(0,10), loggedIn[0].id],
         // the result object is assigned to the overDueList.
         (txObj, { rows: { _array } }) => setOverDueList(_array),
         // failure callback which sends two things Transaction object and Error
@@ -173,7 +185,7 @@ export function HomeScreen({ route, navigation }) {
     })
   }
 
-  //function to handle the date change
+  //function to handle the date change and it takes the newly selected date as an input.
   const onDateSelected = (date) => {
    const currentDate = date || selectedDate;
    setSelectedDate(currentDate);
@@ -191,7 +203,7 @@ export function HomeScreen({ route, navigation }) {
     // calling the extract task function with the selected date to update the screen after deleting the task.
     extractTasks(selectedDate);
   }
-  // marks the task as completed by updating its state to the value completed.
+  // marks the task as completed by updating its state to the value completed and it takes the task id as an input.
   const completeTask = (id) =>{
     db.transaction(async (tx)=>{
       await tx.executeSql(
@@ -202,7 +214,7 @@ export function HomeScreen({ route, navigation }) {
     // calling the extract task function with the selected date to update the screen after marking the task as completed.
     extractTasks(selectedDate);
   }
-  // marks the task as uncompleted by updating its state to the value uncompleted.
+  // marks the task as uncompleted by updating its state to the value uncompleted and it takes the task id as an input.
   const unCompleteTask = (id) =>{
     db.transaction(async (tx)=>{
       await tx.executeSql(

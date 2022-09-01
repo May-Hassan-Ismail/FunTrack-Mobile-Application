@@ -11,6 +11,8 @@ import {openDatabase} from '../components/OpenDatabase';
 
 // opens the TodoDB database.
 const db = openDatabase('db.TodoDB');
+// getting the time zone offset for handling the time zone according to user's location.
+const offset = new Date().getTimezoneOffset()
 
 // use dimensions for getting the screen's width, and height to make the application responsive.
 const screenHeight = Dimensions.get("window").height;
@@ -32,7 +34,7 @@ const screenWidth = Dimensions.get("window").width;
    // state to handle opening and closing the category dropdown menu.
    const [catOpen, setCatOpen] = useState(false);
    // stores the selected date in the calendar picker.
-   const [selectedDate, setSelectedDate] = useState(new Date());
+   const [selectedDate, setSelectedDate] = useState(new Date(new Date().getTime() - (offset*60*1000)));
    // state for selecting the reminder date.
    const [pressed, setPressed]= useState(0);
    // state to handle opening and closing the time picker.
@@ -69,7 +71,10 @@ const screenWidth = Dimensions.get("window").width;
     });
   }
 
-  // creates the list of categories for the dropdown menu, including the label, value and style of each category.
+  /*
+    * creates the list of categories for the dropdown menu, including the label, value and style of each category.
+    * params: it takes the list of user's categories as an input:
+  */
   const createCatDataItems = (list)=>{
     let catArray = [];
     list?.map((item, key)=>{
@@ -120,14 +125,14 @@ const screenWidth = Dimensions.get("window").width;
     }
   }
 
-  // function to handle the date change in the calendar picker.
+  // function to handle the date change in the calendar picker and it takes the newly selected date as an input.
   const onDateChange = (date) => {
    const currentDate = date || selectedDate;
    setSelectedDate(currentDate);
    setCustomStyle([{}]);
   };
 
-  // function to handle the time selection for the time picker.
+  // function to handle the time selection for the time picker and it takes the event and the selected time value as inputs.
   const onTimeSelected = (event, value) => {
     setTimePicker(false);
     setTime(value);
@@ -137,7 +142,7 @@ const screenWidth = Dimensions.get("window").width;
   const clear = () =>{
     setTask("");
     setTime(new Date());
-    setSelectedDate(new Date());
+    setSelectedDate(new Date(new Date().getTime() - (offset*60*1000)));
     setPressed(0);
     setTimePicker(false);
     setValue("3");
@@ -197,7 +202,7 @@ const screenWidth = Dimensions.get("window").width;
                }}
                dropDownContainerStyle={{
                  width: screenWidth * 0.38,
-                 backgroundColor:'#206B6B',
+                 backgroundColor:'black',
                  borderWidth:0,
                  marginVertical:"3%",
                }}
@@ -307,9 +312,10 @@ const screenWidth = Dimensions.get("window").width;
               if(task == ""){
                 alert("Task must have a title");
               }else{
+                console.log(selectedDate);
               navigation.navigate(navScreen, { title: route.params.title, category: category,
                  mode: mode, index: index, contMode:route.params.mode,
-                 task:{name:task, date:new Date(selectedDate).toISOString(), time: time.toString(), color:value,
+                 task:{name:task, date:new Date(selectedDate).toISOString().slice(0,10), time: time.toString(), color:value,
                    rem_date: new Date(new Date(selectedDate).valueOf() - 86400000 * pressed).toString().slice(0,15) } })}}}>
               <Text style={styles.buttonText}>Ok</Text>
             </TouchableOpacity>
@@ -358,7 +364,7 @@ const screenWidth = Dimensions.get("window").width;
      marginVertical:"3%",
    },
   DatePick:{
-    backgroundColor:'#ebf4bd',
+    backgroundColor:'#E0F5B6',
     marginHorizontal:10,
     borderRadius: 20,
     padding:10,

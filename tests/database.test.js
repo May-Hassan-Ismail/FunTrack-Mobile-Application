@@ -32,7 +32,11 @@ describe('Database Testing', () => {
   it('returns list of uncompleted tasks', async() => {
     let unCompList = [];
     unCompList = extractUncompletedTasks(new Date(), [], db);
-    await new Promise((r) => setTimeout(r, 2000));
-    expect(unCompList.length).toEqual(1);
+    //await new Promise((r) => setTimeout(r, 2000));
+    jest.runAllTimers();
+    setTimeout(() => {
+        expect(unCompList.length).toEqual(1);
+     }, 200);
+
   });
 });
