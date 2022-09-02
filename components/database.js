@@ -1,5 +1,6 @@
 import {openDatabase} from './OpenDatabase';
 import { Alert } from 'react-native';
+import {schedulePushNotification} from './Notifications'
 
 // opens the TodoDB database.
 const datab = openDatabase('db.TodoDB');
@@ -280,6 +281,14 @@ export const addTask = async(user_id, task, category, db) =>{
         "INSERT INTO tasks (user_id, category_id, title, time, date, reminder_date, state, tag, priority) VALUES (?,?,?,?,?,?,?,?,?)",
         [user_id, cat_id, task.name, task.time, task.date, task.rem_date, "uncompleted", "", task.color]
       );
+      // schedule a noftification for the created task if its reminder date is today.
+      if(task.rem_date == new Date().toString().slice(0,15)){
+        tx.executeSql("SELECT * FROM tasks ORDER BY id DESC LIMIT 1", null,
+          (txObj, { rows: { _array } }) => schedulePushNotification(_array[0]),
+
+          (txObj, error) => console.log('Error ', error)
+        );
+      }
     });
   }
 }
@@ -304,5 +313,19 @@ export const editTask = (task, id, category, db) =>{
         [task.name, task.time, task.date, task.rem_date, cat_id, task.color, id]
       );
     });
+    // send a notification to the user if the reminder date of the updated task is today.
+    if(task.rem_date == new Date().toString().slice(0,15)){
+      schedulePushNotification({title: task.name, date: task.date, id: id});
+    }
   }
+}
+
+// marks the task as completed by updating its state to the value completed and it takes the task id as an input.
+export const completeTask = (id, db) =>{
+  db.transaction(async (tx)=>{
+    await tx.executeSql(
+      "UPDATE tasks SET state=? WHERE id =?",
+      ['completed', id]
+    );
+  });
 }

@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView, Image, Dimensions,
-         KeyboardAvoidingView, Platform } from 'react-native';
+         KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import Footer from '../components/Footer';
 import CheckReminder from '../components/CheckReminder';
 import {loggedIn} from '../components/database';
@@ -151,75 +152,65 @@ const screenWidth = Dimensions.get("window").width;
      <View style={styles.container}>
        <SafeAreaView style={styles.safeView}>
         {/* I had issue with ios that the dropdown menu wasn't overlapping the other components so I adjusted this by styling */}
-         <View style={[Platform.OS === 'ios' ? {zIndex: 2} : {}, styles.searchCont]}>
+         <View style={[Platform.OS === 'ios' ? {zIndex: 2} : {}, styles.addTaskCont]}>
+           {/* Text input for the user to type or edit the task name */}
+           <KeyboardAvoidingView
+               style ={styles.addTask, {flex:3}}
+           >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+               <TextInput
+                 placeholder = "What would you like to do?"
+                 style={styles.input}
+                 value = {task}
+                 onChangeText={text=>setTask(text)}
+               />
+             </TouchableWithoutFeedback>
+           </KeyboardAvoidingView>
            <View style ={styles.buttonSet}>
            {/* Priority dropdown menu */}
-            <View>
+            <View style={{marginLeft:1}}>
+               <FontAwesome name="flag" size={35} style={styles.iconStyle} />
                <DropDownPicker
                 items={items}
                 open={open}
                 setOpen={setOpen}
                 setValue={setValue}
                 setItems={setItems}
-                placeholder="P"
+                placeholder=""
                 showArrowIcon={false}
-                placeholderStyle={{
-                  color: "white",
-                  fontWeight: "bold",
-                }}
-                style={{
-                  width: 30,
-                  borderWidth:0,
-                  backgroundColor:'#206B6B',
-                  marginRight:"2%",
-                }}
+                style={styles.dropdownContent}
                 dropDownContainerStyle={{
                   width: screenWidth * 0.38,
                   borderWidth:0,
                   marginVertical:"3%",
+                  right: 0,
+                  left: 'auto',
                 }}
               />
             </View>
             {/* category dropdown menu */}
-            <View style={{marginRight:1}}>
+            <View>
+              <FontAwesome name="th-list" size={35} style={styles.iconStyle} />
               <DropDownPicker
                items={catList}
                open={catOpen}
                setOpen={setCatOpen}
                setValue={setCategory}
                setItems={setCatList}
-               placeholder="C"
+               placeholder=""
                showArrowIcon={false}
-               placeholderStyle={{
-                 color: "white",
-                 fontWeight: "bold",
-               }}
-               style={{
-                 width: 30,
-                 borderWidth:0,
-                 backgroundColor:'#206B6B',
-                 marginRight:"2%",
-               }}
+               style={styles.dropdownContent}
                dropDownContainerStyle={{
                  width: screenWidth * 0.38,
                  backgroundColor:'black',
                  borderWidth:0,
                  marginVertical:"3%",
+                 right: 0,
+                 left: 'auto',
                }}
              />
             </View>
            </View>
-           {/* Text input for the user to type or edit the task name */}
-           <KeyboardAvoidingView
-               style ={styles.addTask, {flex:3}}
-           >
-             <TextInput
-               placeholder = "What would you like to do?"
-               style={styles.input}
-               value = {task}
-               onChangeText={text=>setTask(text)}
-             />
-           </KeyboardAvoidingView>
           </View>
          <View style={styles.headCont}>
            <Text style={styles.title}> Set Date: </Text>
@@ -312,12 +303,11 @@ const screenWidth = Dimensions.get("window").width;
               if(task == ""){
                 alert("Task must have a title");
               }else{
-                console.log(selectedDate);
               navigation.navigate(navScreen, { title: route.params.title, category: category,
                  mode: mode, index: index, contMode:route.params.mode,
                  task:{name:task, date:new Date(selectedDate).toISOString().slice(0,10), time: time.toString(), color:value,
                    rem_date: new Date(new Date(selectedDate).valueOf() - 86400000 * pressed).toString().slice(0,15) } })}}}>
-              <Text style={styles.buttonText}>Ok</Text>
+              <Text style={styles.buttonText}>Add</Text>
             </TouchableOpacity>
            </View>
          <Footer nav={navigation}/>
@@ -346,22 +336,33 @@ const screenWidth = Dimensions.get("window").width;
      flex: 1,
      height: '100%',
    },
-   searchCont:{
+   addTaskCont:{
      flexDirection:'row',
      paddingHorizontal:10,
+   },
+   iconStyle:{
+     position: "absolute",
+     top:'5%',
+     color:"#206B6B"
+   },
+   dropdownContent: {
+     width:30,
+     backgroundColor: "transparent",
+     borderColor: 'rgba(255, 255, 255, 0)',
+     marginLeft:"3%",
    },
    addTask: {
      paddingHorizontal:10,
      justifyContent: 'space-around',
    },
    input: {
-     paddingVertical: 10,
+     paddingVertical: "4%",
      paddingHorizontal: 15,
      backgroundColor:'#C7E3E3',
      borderRadius: 60,
      borderColor: '#C0C0C0',
      borderWidth: 1,
-     marginVertical:"3%",
+     marginTop:"3%",
    },
   DatePick:{
     backgroundColor:'#E0F5B6',
@@ -369,7 +370,7 @@ const screenWidth = Dimensions.get("window").width;
     borderRadius: 20,
     padding:10,
     height: screenHeight*0.37,
-    marginVertical:3,
+    marginVertical:'1%',
   },
   timeDisplay:{
     flexDirection:'row',
@@ -387,7 +388,7 @@ const screenWidth = Dimensions.get("window").width;
     fontWeight:'bold'
   },
   buttonSet:{
-    marginTop:10,
+    marginTop:"4%",
     flexDirection:'row',
     alignItems:'center',
     justifyContent: 'space-around',

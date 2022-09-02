@@ -203,7 +203,7 @@ export function SuggestionsScreen({ route, navigation }) {
                 <Text style={styles.taskTitle}> Finish those and elevate your mood 📈</Text>
                 {
                   data.length > 1 &&
-                  <Text style={styles.taskTitle}> from {Math.round(model.predict(0)[1])} to {Math.round(model.predict(1)[1])}</Text>
+                  <Text style={styles.taskTitle}> from {Math.min(Math.max(Math.round(model.predict(0)[1]), 0), 5)} to {Math.min(Math.max(Math.round(model.predict(1)[1]), 0), 5)}</Text>
                 }
                 {
                   unCompTaskList?.map((item, ind)=>{
@@ -219,7 +219,7 @@ export function SuggestionsScreen({ route, navigation }) {
           {
             unCompTaskList.length ==0 && data.length > 1 &&
               <View style={styles.taskCont}>
-                <Text style={styles.taskTitle}> Today's expected mood is {Math.round(model.predict(1)[1])}</Text>
+                <Text style={styles.taskTitle}> Today's expected mood is {Math.min(Math.max(Math.round(model.predict(1)[1]), 0), 5)}</Text>
               </View>
           }
           {/* Letting user to know that there's no enough data to predict the mood level as there's no training data for the regression model */}

@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView,
          KeyboardAvoidingView, Keyboard, ScrollView } from 'react-native';
-import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
+import { MaterialCommunityIcons, FontAwesome5, Ionicons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import List from '../components/List';
 import Footer from '../components/Footer';
@@ -217,25 +217,16 @@ export function CategoryScreen({ navigation }) {
           </KeyboardAvoidingView>
           {/* dropdown menu for choosing the background color of the category */}
           <View>
+             <Ionicons name="color-palette" size={40} style={styles.iconStyle} />
              <DropDownPicker
               items={items}
               open={open}
               setOpen={setOpen}
               setValue={setValue}
               setItems={setItems}
-              placeholder="C"
+              placeholder=""
               showArrowIcon={false}
-              placeholderStyle={{
-                color: "#fff",
-                fontWeight: "bold",
-                fontSize:20,
-                paddingLeft: 3,
-              }}
-              style={{
-                width: 40,
-                borderWidth:0,
-                backgroundColor:'#206B6B',
-              }}
+              style={styles.dropdownContent}
               dropDownContainerStyle={{
                 width: 40,
                 borderWidth:0,
@@ -337,6 +328,17 @@ const styles = StyleSheet.create({
     width:20,
     height:20,
     borderRadius:5,
+  },
+  iconStyle:{
+    position: "absolute",
+    bottom: "2%",
+    color:"#206B6B"
+  },
+  dropdownContent: {
+    width:30,
+    backgroundColor: "transparent",
+    borderColor: 'rgba(255, 255, 255, 0)',
+    marginRight:"2%",
   },
   searchInput: {
     borderRadius:17,

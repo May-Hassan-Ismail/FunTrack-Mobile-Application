@@ -34,8 +34,6 @@ const wait = (timeout) => {
 export function HomeScreen({ route, navigation }) {
   // holds the date selected from the horizontal calendar.
   const [selectedDate, setSelectedDate] = useState(new Date(new Date().getTime() - (offset*60*1000)));
-  // holds the list of all tasks that the user should be notified for.
-  const [notificationList, setNotificationList] = useState([]);
   // holds the list of uncompleted tasks in the selected date.
   const [unCompTaskList, setUnCompTaskList] = useState([]);
   // holds the list of completed tasks in the selected date.
@@ -85,38 +83,8 @@ export function HomeScreen({ route, navigation }) {
     let isMounted = true;
     // extract the tasks of the different categories with the selected date.
     extractTasks(selectedDate);
-    // extract the list of tasks of the loggen in user and which state is uncompleted and the reminder_date is today.
-    // A new notification will be pushed for each task of those to notify the user.
-    db.transaction(tx => {
-      tx.executeSql("SELECT * FROM tasks WHERE reminder_date=? AND state='uncompleted' AND user_id = ?",
-        [new Date().toString().slice(0,15), loggedIn[0].id],
-        // assigns the ResultSet Object to the notificationList.
-        (txObj, { rows: { _array } }) => setNotificationList(_array),
-        // failure callback which sends two things Transaction object and Error
-        (txObj, error) => console.log('Error ', error)
-        ) // end executeSQL
-    });
 
     if (Platform.OS != "web") {
-      // set categories for the notification to create responsive notification.
-      // each notification has 2 buttons, ok and mark and each has different responses.
-      Notifications.setNotificationCategoryAsync("actions", [
-        { buttonTitle: "OK 🆗", identifier: "OK" },
-        { buttonTitle: "Mark ✔", identifier: "Mark" },
-      ])
-      .then((_category) => {})
-      .catch((error) => console.log('Could not have set notification category', error));
-
-      // loops through the list of tasks the user should be notified with and a new notfication is pushed for each task.
-      notificationList?.map((item)=>{
-        schedulePushNotification(item);
-      })
-
-      registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
-      .catch(function(error) {
-        //console.log('There has been a problem with the push notification operation: ' + error.message);
-      });
-
       // This listener is fired whenever a notification is received while the app is foregrounded
       if (isMounted){
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
@@ -126,15 +94,15 @@ export function HomeScreen({ route, navigation }) {
 
       // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
       responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-        //console.log(response);
         // the notification is dismissed if the user clicks on the notification or any of its buttons.
-        if (response.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER) {
+        if (response.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER || response.actionIdentifier == 'OK') {
           Notifications.dismissNotificationAsync(response.notification.request.identifier);
         }
         // if the user clicks on the Mark button, the referred task will be marked as completed.
         // Also the selected date will be the date of that task to show the task after being marked to the user.
         if(response.actionIdentifier == 'Mark'){
           completeTask(response.notification.request.content.data.id);
+          Notifications.dismissNotificationAsync(response.notification.request.identifier);
           setSelectedDate(new Date(response.notification.request.content.data.date));
         }
       });
