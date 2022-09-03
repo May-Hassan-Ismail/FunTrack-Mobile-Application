@@ -250,7 +250,7 @@ export function HomeScreen({ route, navigation }) {
           iconContainer={{flex: 0.1}}
           onDateSelected={onDateSelected}
         />
-        <ScrollView style={{maxHeight:'70%', marginTop:'2%'}}>
+        <ScrollView style={{maxHeight:'66%', marginTop:'2%'}}>
         {/* The container of the uncompleted tasks */}
         {/* if the uncompleted task is for today and its time is before the current time, it's an overdue not uncompleted task */}
           <View style={styles.taskCont}>

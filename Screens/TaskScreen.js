@@ -143,7 +143,7 @@ export function TaskScreen({ route, navigation }) {
   // creates the tasks' uncompleted container and completed container.
   const taskContainer = () =>{
     return(
-      <ScrollView style={{maxHeight:'90%'}}>
+      <ScrollView style={{maxHeight:'82%'}}>
         <View style={styles.taskCont}>
           {/* The title will be the today's date only if it's the today's tasksList screen */}
           {route.params.title == "Today" &&

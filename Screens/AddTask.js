@@ -151,7 +151,7 @@ const screenWidth = Dimensions.get("window").width;
    return (
      <View style={styles.container}>
        <SafeAreaView style={styles.safeView}>
-        {/* I had issue with ios that the dropdown menu wasn't overlapping the other components so I adjusted this by styling */}
+         {/* I had issue with ios that the dropdown menu wasn't overlapping the other components so I adjusted this by styling */}
          <View style={[Platform.OS === 'ios' ? {zIndex: 2} : {}, styles.addTaskCont]}>
            {/* Text input for the user to type or edit the task name */}
            <KeyboardAvoidingView
@@ -211,7 +211,7 @@ const screenWidth = Dimensions.get("window").width;
              />
             </View>
            </View>
-          </View>
+         </View>
          <View style={styles.headCont}>
            <Text style={styles.title}> Set Date: </Text>
          </View>
@@ -246,14 +246,13 @@ const screenWidth = Dimensions.get("window").width;
                fontFamily: 'serif',
                color: '#000000',
              }}
-             width={screenWidth * 0.9}
-             height={screenHeight*0.5}
+             width={screenWidth * 0.92}
              initialDate={selectedDate}
              onDateChange={onDateChange}
              customDatesStyles={customStyle}
            />
          </View>
-         <View>
+         <View style ={{flex:1.5}}>
            <View style={styles.headCont}>
              <Text style={styles.title}>Set time:</Text>
            </View>
@@ -276,8 +275,8 @@ const screenWidth = Dimensions.get("window").width;
                   onChange={onTimeSelected}
                />
             )}
-          </View>
-          <View>
+         </View>
+         <View style ={{flex:1.5}}>
             <View style={styles.headCont}>
               <Text style={styles.title}>Set Reminder:</Text>
             </View>
@@ -285,9 +284,9 @@ const screenWidth = Dimensions.get("window").width;
             <View style={{height:screenHeight*0.065, alignItems:'center'}}>
               <CheckReminder pressed={pressed} setPressed={setPressed}/>
             </View>
-           </View>
-           {/* clear button to reset the whole page */}
-           <View style ={styles.buttonSet}>
+         </View>
+         {/* clear button to reset the whole page */}
+         <View style ={styles.buttonSet}>
             <TouchableOpacity style ={styles.button} onPress={()=>{clear()}}>
               <Text style={styles.buttonText}>Clear</Text>
             </TouchableOpacity>
@@ -309,8 +308,10 @@ const screenWidth = Dimensions.get("window").width;
                    rem_date: new Date(new Date(selectedDate).valueOf() - 86400000 * pressed).toString().slice(0,15) } })}}}>
               <Text style={styles.buttonText}>Add</Text>
             </TouchableOpacity>
-           </View>
-         <Footer nav={navigation}/>
+         </View>
+         <View style ={{flex:1}}>
+          <Footer nav={navigation}/>
+         </View>
        </SafeAreaView>
      </View>
    );
@@ -321,6 +322,7 @@ const screenWidth = Dimensions.get("window").width;
    container: {
      flex: 1,
      backgroundColor: '#f4f6fc',
+     flexDirection: "column",
    },
    title:{
      fontFamily: "Skranji_700Bold",
@@ -335,10 +337,13 @@ const screenWidth = Dimensions.get("window").width;
    safeView:{
      flex: 1,
      height: '100%',
+     flexDirection: "column",
    },
    addTaskCont:{
      flexDirection:'row',
      paddingHorizontal:10,
+     paddingBottom: 3,
+     flex: 1,
    },
    iconStyle:{
      position: "absolute",
@@ -369,14 +374,15 @@ const screenWidth = Dimensions.get("window").width;
     marginHorizontal:10,
     borderRadius: 20,
     padding:10,
-    height: screenHeight*0.37,
+    flex: 5,
+    alignItems:'center',
+    justifyContent: 'center',
     marginVertical:'1%',
   },
   timeDisplay:{
     flexDirection:'row',
     alignItems:'center',
     justifyContent: 'center',
-    height:screenHeight*0.06,
   },
   timeBox:{
     borderWidth:3,
@@ -392,7 +398,7 @@ const screenWidth = Dimensions.get("window").width;
     flexDirection:'row',
     alignItems:'center',
     justifyContent: 'space-around',
-    height:screenHeight*0.06,
+    flex:1,
   },
   button:{
     backgroundColor:'#FFBEBE',
