@@ -139,11 +139,11 @@ export const authenticateUser = (username, password, navigation, db)  =>{
     2) list array for saving the returned list of tasks.
     3) open datababse.
 */
-export const extractUncompletedTasks = (date, list, db)=>{
+export const extractUncompletedTasks = (date, list, user_id, db)=>{
   db.transaction(tx => {
     // extracts the list of tasks of the entered date and which state is uncompleted and which belongs to the logged in user.
     tx.executeSql("SELECT * FROM tasks WHERE date LIKE '%"+date.toISOString().slice(0,10)+"%' AND state='uncompleted' AND user_id=?",
-      [loggedIn[0].id],
+      [user_id],
       // asigns the result object to the list to be returned.
       (txObj, { rows: { _array } }) => list = (_array),
       // failure callback which sends two things Transaction object and Error.

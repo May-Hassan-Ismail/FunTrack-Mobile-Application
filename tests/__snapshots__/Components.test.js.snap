@@ -565,30 +565,7 @@ exports[`<List /> should match snapshot 1`] = `
       }
     }
   >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        Array [
-          Object {
-            "color": undefined,
-            "fontSize": 30,
-          },
-          Object {
-            "color": "#000",
-            "marginRight": 10,
-          },
-          Object {
-            "fontFamily": "material-community",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          Object {},
-        ]
-      }
-    >
-      󱃔
-    </Text>
+    <Text />
     <Text
       style={
         Object {
@@ -627,29 +604,7 @@ exports[`<List /> should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
-        style={
-          Array [
-            Object {
-              "color": undefined,
-              "fontSize": 30,
-            },
-            Object {
-              "color": "#000",
-            },
-            Object {
-              "fontFamily": "anticon",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            Object {},
-          ]
-        }
-      >
-        
-      </Text>
+      <Text />
     </View>
     <View
       accessible={true}
@@ -668,29 +623,7 @@ exports[`<List /> should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
-        style={
-          Array [
-            Object {
-              "color": undefined,
-              "fontSize": 30,
-            },
-            Object {
-              "color": "#000",
-            },
-            Object {
-              "fontFamily": "material-community",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            Object {},
-          ]
-        }
-      >
-        󰆴
-      </Text>
+      <Text />
     </View>
   </View>
 </View>
@@ -836,29 +769,7 @@ exports[`<Task /> should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
-        style={
-          Array [
-            Object {
-              "color": undefined,
-              "fontSize": 30,
-            },
-            Object {
-              "color": "#000",
-            },
-            Object {
-              "fontFamily": "anticon",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            Object {},
-          ]
-        }
-      >
-        
-      </Text>
+      <Text />
     </View>
     <View
       accessible={true}
@@ -877,29 +788,7 @@ exports[`<Task /> should match snapshot 1`] = `
         }
       }
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
-        style={
-          Array [
-            Object {
-              "color": undefined,
-              "fontSize": 30,
-            },
-            Object {
-              "color": "#000",
-            },
-            Object {
-              "fontFamily": "material-community",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            Object {},
-          ]
-        }
-      >
-        󰆴
-      </Text>
+      <Text />
     </View>
   </View>
 </View>
