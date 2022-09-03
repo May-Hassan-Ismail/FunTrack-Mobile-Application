@@ -50,7 +50,7 @@
   },
   "jest": {
     "testEnvironment": "jsdom",
-    "preset": "jest-expo"
+    "preset": "jest-expo/universal"
   },
   "private": true
 }
