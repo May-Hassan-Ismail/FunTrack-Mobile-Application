@@ -33,7 +33,7 @@ const wait = (timeout) => {
 
 export function HomeScreen({ route, navigation }) {
   // holds the date selected from the horizontal calendar.
-  const [selectedDate, setSelectedDate] = useState(new Date(new Date().getTime() - (offset*60*1000)));
+  const [selectedDate, setSelectedDate] = useState(new Date());
   // holds the list of uncompleted tasks in the selected date.
   const [unCompTaskList, setUnCompTaskList] = useState([]);
   // holds the list of completed tasks in the selected date.
@@ -56,7 +56,7 @@ export function HomeScreen({ route, navigation }) {
     setCompTaskList([]);
     setUnCompTaskList([]);
     setOverDueList([]);
-    setSelectedDate(new Date(new Date().getTime() - (offset*60*1000)));
+    setSelectedDate(new Date());
     // start with the loading state being true until data is extracted from the database.
     setLoading(true);
     if(route.params != undefined){

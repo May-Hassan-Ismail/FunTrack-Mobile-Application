@@ -1,10 +1,11 @@
+import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView, Image, Dimensions,
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, SafeAreaView, Image, Dimensions,
          KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import Footer from '../components/Footer';
 import CheckReminder from '../components/CheckReminder';
 import {loggedIn} from '../components/database';
@@ -151,6 +152,7 @@ const screenWidth = Dimensions.get("window").width;
    return (
      <View style={styles.container}>
        <SafeAreaView style={styles.safeView}>
+        <ScrollView style={{flex:1}}>
          {/* I had issue with ios that the dropdown menu wasn't overlapping the other components so I adjusted this by styling */}
          <View style={[Platform.OS === 'ios' ? {zIndex: 2} : {}, styles.addTaskCont]}>
            {/* Text input for the user to type or edit the task name */}
@@ -309,9 +311,11 @@ const screenWidth = Dimensions.get("window").width;
               <Text style={styles.buttonText}>Add</Text>
             </TouchableOpacity>
          </View>
-         <View style ={{flex:1}}>
+        </ScrollView>
+        <View>
           <Footer nav={navigation}/>
-         </View>
+        </View>
+        <StatusBar barStyle="light-content" backgroundColor= '#f4f6fc' />
        </SafeAreaView>
      </View>
    );
