@@ -83,35 +83,32 @@ export function HomeScreen({ route, navigation }) {
     let isMounted = true;
     // extract the tasks of the different categories with the selected date.
     extractTasks(selectedDate);
-
-    if (Platform.OS != "web") {
-      // This listener is fired whenever a notification is received while the app is foregrounded
-      if (isMounted){
-        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-          setNotification(notification);
-        });
-      }
-
-      // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-        // the notification is dismissed if the user clicks on the notification or any of its buttons.
-        if (response.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER || response.actionIdentifier == 'OK') {
-          Notifications.dismissNotificationAsync(response.notification.request.identifier);
-        }
-        // if the user clicks on the Mark button, the referred task will be marked as completed.
-        // Also the selected date will be the date of that task to show the task after being marked to the user.
-        if(response.actionIdentifier == 'Mark'){
-          completeTask(response.notification.request.content.data.id);
-          Notifications.dismissNotificationAsync(response.notification.request.identifier);
-          setSelectedDate(new Date(response.notification.request.content.data.date));
-        }
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    if (isMounted){
+      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+        setNotification(notification);
       });
-      return () => {
-        Notifications.removeNotificationSubscription(notificationListener.current);
-        Notifications.removeNotificationSubscription(responseListener.current);
-        isMounted = false;
-      };
     }
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      // the notification is dismissed if the user clicks on the notification or any of its buttons.
+      if (response.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER || response.actionIdentifier == 'OK') {
+        Notifications.dismissNotificationAsync(response.notification.request.identifier);
+      }
+      // if the user clicks on the Mark button, the referred task will be marked as completed.
+      // Also the selected date will be the date of that task to show the task after being marked to the user.
+      if(response.actionIdentifier == 'Mark'){
+        completeTask(response.notification.request.content.data.id);
+        Notifications.dismissNotificationAsync(response.notification.request.identifier);
+        setSelectedDate(new Date(response.notification.request.content.data.date));
+      }
+    });
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+      isMounted = false;
+    };
   }
 
  /*

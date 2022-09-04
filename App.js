@@ -91,48 +91,45 @@ export default function App() {
 
   const setupNotifications = () => {
     let isMounted = true;
+    // set categories for the notification to create responsive notification.
+    // each notification has 2 buttons, ok and mark and each has different responses.
+    Notifications.setNotificationCategoryAsync("actions", [
+      { buttonTitle: "OK 🆗", identifier: "OK" },
+      { buttonTitle: "Mark ✔", identifier: "Mark" },
+    ])
+    .then((_category) => {})
+    .catch((error) => console.log('Could not have set notification category', error));
 
-    if (Platform.OS != "web") {
-      // set categories for the notification to create responsive notification.
-      // each notification has 2 buttons, ok and mark and each has different responses.
-      Notifications.setNotificationCategoryAsync("actions", [
-        { buttonTitle: "OK 🆗", identifier: "OK" },
-        { buttonTitle: "Mark ✔", identifier: "Mark" },
-      ])
-      .then((_category) => {})
-      .catch((error) => console.log('Could not have set notification category', error));
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
+    .catch(function(error) {
+      //console.log('There has been a problem with the push notification operation: ' + error.message);
+    });
 
-      registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
-      .catch(function(error) {
-        //console.log('There has been a problem with the push notification operation: ' + error.message);
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    if (isMounted){
+      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+        setNotification(notification);
       });
-
-      // This listener is fired whenever a notification is received while the app is foregrounded
-      if (isMounted){
-        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-          setNotification(notification);
-        });
-      }
-
-      // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-        // the notification is dismissed if the user clicks on the notification or any of its buttons.
-        if (response.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER || response.actionIdentifier == 'OK') {
-          Notifications.dismissNotificationAsync(response.notification.request.identifier);
-        }
-        // if the user clicks on the Mark button, the referred task will be marked as completed.
-        // Also the selected date will be the date of that task to show the task after being marked to the user.
-        if(response.actionIdentifier == 'Mark'){
-          completeTask(response.notification.request.content.data.id, db);
-          Notifications.dismissNotificationAsync(response.notification.request.identifier);
-        }
-      });
-      return () => {
-        Notifications.removeNotificationSubscription(notificationListener.current);
-        Notifications.removeNotificationSubscription(responseListener.current);
-        isMounted = false;
-      };
     }
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      // the notification is dismissed if the user clicks on the notification or any of its buttons.
+      if (response.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER || response.actionIdentifier == 'OK') {
+        Notifications.dismissNotificationAsync(response.notification.request.identifier);
+      }
+      // if the user clicks on the Mark button, the referred task will be marked as completed.
+      // Also the selected date will be the date of that task to show the task after being marked to the user.
+      if(response.actionIdentifier == 'Mark'){
+        completeTask(response.notification.request.content.data.id, db);
+        Notifications.dismissNotificationAsync(response.notification.request.identifier);
+      }
+    });
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+      isMounted = false;
+    };
   }
   // function for calling the timer to wait until the data is returned from the database.
   const finish = () =>{
