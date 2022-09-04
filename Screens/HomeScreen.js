@@ -9,7 +9,6 @@ import * as Notifications from 'expo-notifications';
 import Footer from '../components/Footer';
 import {openDatabase} from '../components/OpenDatabase';
 import {addTask, editTask, loggedIn, extractLoggedInUser} from '../components/database';
-import {schedulePushNotification, registerForPushNotificationsAsync} from '../components/Notifications'
 import Task from '../components/Task';
 
 // opens the TodoDB database.
@@ -33,7 +32,7 @@ const wait = (timeout) => {
 
 export function HomeScreen({ route, navigation }) {
   // holds the date selected from the horizontal calendar.
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date(new Date().getTime() - (offset*60*1000)));
   // holds the list of uncompleted tasks in the selected date.
   const [unCompTaskList, setUnCompTaskList] = useState([]);
   // holds the list of completed tasks in the selected date.
@@ -56,7 +55,7 @@ export function HomeScreen({ route, navigation }) {
     setCompTaskList([]);
     setUnCompTaskList([]);
     setOverDueList([]);
-    setSelectedDate(new Date());
+    setSelectedDate(new Date(new Date().getTime() - (offset*60*1000)));
     // start with the loading state being true until data is extracted from the database.
     setLoading(true);
     if(route.params != undefined){
