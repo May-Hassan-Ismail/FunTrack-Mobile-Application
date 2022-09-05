@@ -80,26 +80,36 @@ const createDefaultCategories = (db) =>{
 */
 export const createUser = (username, password, navigation, db) =>{
   if(username != "" && password !=""){
-    // inserting a new row in the users table with the entered username and password.
-    db.transaction(async (tx)=>{
-      await tx.executeSql(
-        "INSERT INTO users (username, password, state) VALUES (?,?,?)", [username, password, 'loggedin'],
-        (txObj, { rows: { _array } }) => {
-          // navigating to the Home page after creating a new user in the users table.
-          navigation.navigate('Home', { title: "HomeScreen"});
-          // creates the default categories to the user the he/she can remove, if he/she wants to.
-          createDefaultCategories(db);
-        },
-        // alert the user that the username is not valid because it has to be unique.
-        (txObj, error) => {
-          alert("Invalid username, an account with the same username already exists!")
+    // checking the password length and it must be above or equal 6 characters.
+    if(password.length>=6){
+      // checking the password contains at least 1 letter.
+      if(password.search(/[a-z]/i)>=0){
+        // checking the password contains at least 1 digit.
+        if(password.search(/[0-9]/)>=0){
+          // inserting a new row in the users table with the entered username and password.
+          db.transaction(async (tx)=>{
+            await tx.executeSql(
+              "INSERT INTO users (username, password, state) VALUES (?,?,?)", [username, password, 'loggedin'],
+              (txObj, { rows: { _array } }) => {
+                // navigating to the Home page after creating a new user in the users table.
+                navigation.navigate('Home', { title: "HomeScreen"});
+                // creates the default categories to the user the he/she can remove, if he/she wants to.
+                createDefaultCategories(db);
+              },
+              // alert the user that the username is not valid because it has to be unique.
+              (txObj, error) => {
+                alert("Invalid username, an account with the same username already exists!")
+              }
+            );
+          });
         }
-      );
-    });
+        else alert("Password must contain at least 1 digit!");
+      }
+      else alert("Password must contain at least 1 letter!");
+    }
+    else alert("Password must be at least 6 characters!");
   }
-  else{
-    alert("Empty fields are not allowed!")
-  }
+  else alert("Empty fields are not allowed!");
 }
 
 /*
