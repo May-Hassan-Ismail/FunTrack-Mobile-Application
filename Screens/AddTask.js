@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, SafeAreaView, Image, Dimensions,
-         KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+         KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, LogBox } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -86,6 +86,7 @@ const screenWidth = Dimensions.get("window").width;
   }
 
   useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     extractCategories();
     // set the navigation screen to the screen which the user is navigated from.
     setNavScreen(route.params.navTitle);
